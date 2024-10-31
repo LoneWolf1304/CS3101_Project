@@ -25,38 +25,50 @@ int display_name()
 
 
 int main()
-{ initscr();
-   
-    display_name();
-    int row, col, choice;
-    getmaxyx(stdscr,row,col);
-    //printw("%d, %d", row, col);
-    move((row/2)-8,(col/2)-20);
-
-    printw("Where the sky's not the limit, but just the view!\n");
-    move((row/2)-5,(col/2)-3);
-    refresh();
-    printw("1. Sign Up\n");
-    move((row/2)-4,(col/2)-3);
-    printw( "2. Login \n");
-    move((row/2)-1,(col/2)-3);
-    printw("Enter your choice: ");
-    scanw("%d", &choice);
-    system("clear"); 
-    //printw("%d", choice);
-    switch(choice)
+{   initscr();
+    while(1)
     {
-        case 1:  
-                sign_up();
-                break;
-        case 2: printw("Login");
-                break;
-        default: printw("Invalid choice");
+        display_name();
+        int row, col, choice;
+        getmaxyx(stdscr,row,col);
+        //printw("%d, %d", row, col);
+        move((row/2)-8,(col/2)-20);
+
+        printw("Where the sky's not the limit, but just the view!\n");
+        move((row/2)-5,(col/2)-3);
+        refresh();
+        printw("1. Sign Up\n");
+        move((row/2)-4,(col/2)-3);
+        printw( "2. Login \n");
+        move((row/2)-3,(col/2)-3);
+        printw("3. Exit\n");
+        move((row/2)+2,(col/2)-3);
+        printw("Enter your choice: ");
+        scanw("%d", &choice);
+        clear(); 
+        //printw("%d", choice);
+        switch(choice)
+        {
+            case 1:  
+                    sign_up();
+                    //fileRead("Users.txt");
+                    move((row/2)+5,(col/2)-5);
+                    printw("Press any key to go to main interface");
+                    getch();
+                    break;
+            case 2: printw("Login");
+                    break;
+            case 3: break;
+            default: printw("Invalid choice");
+        }
+        if(choice ==3)
+        {
+            break;
+        }
+        clear();
+        refresh();
+        display_name();
     }
-
-
-
-
     getch();
     endwin();
 }
