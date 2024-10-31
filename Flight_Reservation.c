@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include<string.h>
-
+#include "SignUp.c"
 int display_name()
 {
    
@@ -33,7 +33,15 @@ int main()
     printw("2. Login \n");
     printw("Enter your choice: ");
     scanw("%d", &choice);
-    printw("%d", choice);
+    //printw("%d", choice);
+    switch(choice)
+    {
+        case 1: sign_up();
+                break;
+        case 2: printw("Login");
+                break;
+        default: printw("Invalid choice");
+    }
 
 
 
