@@ -43,10 +43,14 @@ void fileRead(char *filename)
 int sign_up()
 {
     USER user;
+    int row, col, choice;
+    getmaxyx(stdscr,row,col);
+    move((row/2)-3,(col/2)-4);
     char nm[50], pwd[50];
     char filename[] = "Users.txt";
     printw("Enter your name: ");
     getstr(user.name);
+    move((row/2)-2,(col/2)-4);
     printw("Enter your password: ");
     // scanf("%s", user.pwd);
     //fgets(user.pwd, 50, stdin);
