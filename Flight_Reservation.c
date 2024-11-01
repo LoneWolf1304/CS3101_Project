@@ -39,10 +39,12 @@ int main()
         refresh();
         printw("1. Sign Up\n");
         move((row/2)-4,(col/2)-3);
-        printw( "2. Login \n");
+        printw( "2. Admin Login \n");
         move((row/2)-3,(col/2)-3);
-        printw("3. Exit\n");
-        move((row/2)+2,(col/2)-3);
+        printw("3. User Login\n");
+        move((row/2)-2,(col/2)-3);
+        printw("4. Exit\n");
+        move((row/2)+3,(col/2)-3);
         printw("Enter your choice: ");
         scanw("%d", &choice);
         clear(); 
@@ -56,12 +58,16 @@ int main()
                     printw("Press any key to go to main interface");
                     getch();
                     break;
-            case 2: printw("Login");
+            case 2: printw("Admin Login");
                     break;
-            case 3: break;
+            case 3: printw("User Login");
+                    break;
+                    break;
+            case 4: printw("Exit");
+                    break;
             default: printw("Invalid choice");
         }
-        if(choice ==3)
+        if(choice ==4)
         {
             break;
         }
