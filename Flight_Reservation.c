@@ -2,6 +2,8 @@
 #include <ncurses.h>
 #include<string.h>
 #include "SignUp.c"
+#include "Login.c"
+
 int display_name()
 {
     move(0, 13);
@@ -58,10 +60,16 @@ int main()
                     printw("Press any key to go to main interface");
                     getch();
                     break;
-            case 2: printw("Admin Login");
+            case 2: move((row/2)-8,(col/2)-2);
+                    printw("Admin Login");
+                    admin_login();
+                    getch();
                     break;
-            case 3: printw("User Login");
-                    break;
+            case 3:
+                    move((row/2)-8,(col/2)-2);
+                    printw("User Login");
+                    user_login();
+                    getch();
                     break;
             case 4: printw("Exit");
                     break;

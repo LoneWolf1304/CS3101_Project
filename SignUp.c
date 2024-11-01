@@ -59,6 +59,27 @@ void fileRead(char *filename)
     fclose(fptr);
 }
 
+void fileRead1(char *filename)
+{
+    FILE *fptr;
+    ADMIN admin;
+    fptr = fopen(filename, "r");
+    if(fptr == NULL)
+    {
+    printw("Error opening file!\n");
+    exit(1);
+    }
+    while(fread(&admin, sizeof(ADMIN), 1, fptr))
+    {
+        printw("Name: %s\n", admin.name);
+        printw("Password: %s\n", admin.pwd);
+        printw("ID: %s\n", admin.id);
+    }
+    fclose(fptr);
+}
+
+
+
 
 
 int sign_up()
