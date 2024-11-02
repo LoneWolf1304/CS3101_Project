@@ -3,14 +3,14 @@
 #include<string.h>
 #include<ncurses.h>
 
-#define MAX_FlIGHTS=50
-#define MAX_SEATS-60
+#define MAX_FLIGHTS 50
+#define MAX_SEATS 60
 
 typedef struct {
 	int flightnum;
 	int seatsFree;
-	int source[100];
-	int destination [100];
+	char source[100];
+	char destination [100];
 	char date[11]; 
 } flight;
 
@@ -24,7 +24,7 @@ typedef struct {
 flight totalflight[MAX_FLIGHTS];    // array of structures
 
 
-void searchFlight(const char* source, const char* destination, const char* date){  //function to searchFlights
+void searchFlight(char* source, char* destination, char* date){  //function to searchFlights
 	clear();
 	int flag=0;
 //	printw("Avilabale Flight from %s to %s on %s:\n",source,destination,date);
@@ -35,13 +35,13 @@ void searchFlight(const char* source, const char* destination, const char* date)
 		   strcmp(totalflight[i].date,date) == 0 ){
 		
 		printw("Flight Available !\n");
-		printw("Flight Number: %d, Seats Available: %d\n",totalflight[i].flightnum,flight[i].seatsFree);
+		printw("Flight Number: %d, Seats Available: %d\n",totalflight[i].flightnum,totalflight[i].seatsFree);
 		flag++;
 		}
 	}
 	if(flag==0){
 
-		printw("Soor ! No flights found");
+		printw("Sorry ! No flights found");
 	}
 	
 	printw("Press any key to continue!");

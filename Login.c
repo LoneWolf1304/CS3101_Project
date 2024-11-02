@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "booking.c"
 
 int admin_login()
 {
@@ -82,6 +82,28 @@ int user_login()
         {
             move((row/2)-1,(col/2)-3);
             printw("Login successful\n");
+            clear();
+            printw("1. Search Flights\n");
+            printw("2. Book Tickets\n");
+            scanw("%d", &choice);
+            if(choice == 1)
+            {
+                char source[100], dest[100], date[100];
+                printw("Enter source: ");
+                getstr(source);
+                printw("Enter destination: ");
+                getstr(dest);
+                printw("Enter date: ");
+                getstr(date);
+                searchFlight(source, dest, date);
+            }
+            else if(choice == 2)
+            {
+                int flightnum;
+                printw("Enter flight number: ");
+                scanw("%d", &flightnum);
+                bookFlight(flightnum);
+            }
             break;
         }
         else
