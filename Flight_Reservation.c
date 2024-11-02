@@ -3,6 +3,8 @@
 #include<string.h>
 #include "SignUp.c"
 #include "Login.c"
+#include "booking.c"
+
 
 int display_name()
 {
