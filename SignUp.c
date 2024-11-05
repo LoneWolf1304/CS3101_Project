@@ -37,7 +37,7 @@ void fileWrite1(char *filename, ADMIN *admin)
     printw("Error opening file!\n");
     exit(1);
     }
-    fwrite(admin, sizeof(USER), 1, fptr);
+    fwrite(admin, sizeof(ADMIN), 1, fptr);
     fclose(fptr);
 }
 

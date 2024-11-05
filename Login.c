@@ -58,15 +58,15 @@ int user_login()
 
     int row, col, choice;
     getmaxyx(stdscr,row,col);
-
+    char name[50], pswd[50];
     move((row/2)-5,(col/2)-3);
 
     printw("Enter your name: ");
-    getstr(user.name);
+    getstr(name);
     move((row/2)-4,(col/2)-3);
     printw("Enter your password: ");
     noecho();
-    getstr(user.pwd);
+    getstr(pswd);
     echo();
 
     fptr = fopen("Users.txt", "r");
@@ -75,11 +75,14 @@ int user_login()
     printw("Error opening file!\n");
     exit(1);
     }
-
+    int flag=0;
     while(fread(&user, sizeof(USER), 1, fptr))
     {
-        if(strcmp(user.name, user.name) == 0 && strcmp(user.pwd, user.pwd) == 0)
+        // printw("%s %s", user.name, user.pwd);
+        // getch();
+        if(strcmp(user.name, name) == 0 && strcmp(user.pwd, pswd) == 0)
         {
+            flag=1;
             move((row/2)-1,(col/2)-3);
             printw("Login successful\n");
             clear();
@@ -99,19 +102,23 @@ int user_login()
             }
             else if(choice == 2)
             {
-                int flightnum;
+                char flightnum[50];
                 printw("Enter flight number: ");
-                scanw("%d", &flightnum);
+                getstr(flightnum);
                 bookFlight(flightnum);
             }
             break;
         }
-        else
-        {
-            printw("Login failed. Try Again\n");
-            break;
-        }
     }
+    if(flag==0)
+    {
+    move((row/2)-1,(col/2)-3);
+    printw("Incorrect Username/Password....." );
+    move((row/2),(col/2)-3);
+    printw("Login failed, try again.");
+    move((row/2)+3,(col/2)-3);
+    printw("Press any key to go to main!!");
     fclose(fptr);
      return 0;
+    }
 }
