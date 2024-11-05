@@ -3,6 +3,7 @@
 #include<string.h>
 #include<ncurses.h>
 
+
 #define MAX_FLIGHTS 50
 #define MAX_SEATS 60
 
@@ -24,52 +25,53 @@ typedef struct {
 flight totalflight[MAX_FLIGHTS];    // array of structures
 
 
-void searchFlight(char* source, char* destination, char* date){  //function to searchFlights
-	clear();
-	int flag=0;
-//	printw("Avilabale Flight from %s to %s on %s:\n",source,destination,date);
-	printw("Please Wait....");
+void searchFlight(const char* source, const char* destination, const char* date){  //function to searchFlights
+
+	printw("Avilabale Flight from %s to %s on %s:\n",source,destination,date);
 	for (int i =0; i < MAX_FLIGHTS; i++){
 		if (strcmp(totalflight[i].source,source) == 0 &&
 		   strcmp(totalflight[i].destination,destination) == 0 &&
 		   strcmp(totalflight[i].date,date) == 0 ){
-		
+
 		printw("Flight Available !\n");
 		printw("Flight Number: %d, Seats Available: %d\n",totalflight[i].flightnum,totalflight[i].seatsFree);
-		flag++;
+
 		}
 	}
-	if(flag==0){
-
-		printw("Sorry ! No flights found");
-	}
-	
-	printw("Press any key to continue!");
 
 
 }
 
 
-int bookFlight(int flightnum ){
-	for(int i=0;i< MAX_FLIGHTS;i++){
+int bookFlight(int flightnum){
 
+	int numTicket;
+
+	for(int i=0; i< MAX_FLIGHTS;i++){
 		if(totalflight[i].flightnum=flightnum){
-			
-			if(totalflight[i].seatsFree>0){
-				totalflight[i].seatsFree--;
-				printw("Booking Sucessful !");
+			printw("The number of seats avaiable: %d",totalflight[i].seatsFree);
+			printw("Enter number of seats to be booked:");
+			echo();
+			scanw("%d",&numTicket);
+			noecho();
+			if(numTicket >0 && numTicket <= totalflight[i].seatsFree){
+
+				totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
+				printw("Booked Sucessfully !!");
 				return 1;
 			}
-			else
-				printw("Sorry ! No seats Available :(");
-				return 0;
+			else{
 
+				printw("Invalid Request :(");
+			return 0;
+			}
 		}
 	}
-
-	printw("No flights found!");
-
+	printw("Flight not found");
+	return 0;
 }
+
+
 
 
 
