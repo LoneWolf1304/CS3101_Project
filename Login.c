@@ -91,14 +91,16 @@ int user_login()
             scanw("%d", &choice);
             if(choice == 1)
             {
-                char source[100], dest[100], date[100];
+                char source[100], dest[100], date[100], time[50];
                 printw("Enter source: ");
                 getstr(source);
                 printw("Enter destination: ");
                 getstr(dest);
                 printw("Enter date: ");
                 getstr(date);
-                searchFlight(source, dest, date);
+                printw("Enter time:");
+                getstr(time);
+                searchFlight(source, dest, date, time);
             }
             else if(choice == 2)
             {
