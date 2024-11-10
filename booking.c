@@ -6,6 +6,7 @@
 
 #define MAX_FLIGHTS 50
 #define MAX_SEATS 60
+#define MAX_BOOKINGS 50
 
 
 
@@ -77,6 +78,7 @@ void fileReadWrite(char* filename, char* airnum, int seats)
     if(fptr == NULL)
     {
         printf("Error opening file!\n");
+        free(airs);
         exit(1);
     }
 
@@ -86,6 +88,7 @@ void fileReadWrite(char* filename, char* airnum, int seats)
     }
     
     fclose(fptr);
+    free(airs);
 }
 
 
@@ -185,7 +188,10 @@ typedef struct {
 	char name[50];
 	int age;
 	char gender[10];
+    char type[10]; //passenger type(adult, child, infant)
 } BOOKER;
+
+BOOKER bookers[MAX_BOOKINGS];
 
 int bookFlight(char* flightnum){
 
@@ -241,14 +247,41 @@ FILE *fptr;
 			printw("The number of seats avaiable: %d\n",totalflight[i].seatsFree);
 			printw("Enter number of seats to be booked:");
 			scanw("%d",&numTicket);
+
 			if(numTicket >0 && numTicket <= totalflight[i].seatsFree){
 				BOOKER bookers[numTicket];
 				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
+                for(int j=0; j<numTicket; j++){
+                    printw("Enter name of passenger %d: ",j+1);
+                    scanw("%s",bookers[j].name);
+                    printw("Enter age of passenger %d: ",j+1);
+                    scanw("%d",&bookers[j].age);   
+                    printw("Gender (M/F):");
+                    scanw("%s",bookers[j].gender);
+
+                    if (bookers[j].age < 2){
+                        strcpy(bookers[j].type, "infant");
+            
+                    }
+                    else if (bookers[j].age < 12){
+                        strcpy(bookers[j].type, "child");
+                    }
+                    else{
+                        strcpy(bookers[j].type, "adult");
+                    }
+                }
+                
+                }
+
 				fileReadWrite("AirList.txt", totalflight[i].flightnum, numTicket);
 				printw("Booked Sucessfully !!");
+
+                for(int j=0; j<numTicket; j++){
+                    printw("Name: %s, Age: %d, Gender: %s, %s\n",bookers[j].name,bookers[j].age,bookers[j].gender,bookers[j].type);
 				return 1;
 			}
-			else{
+        }
+            else{
 
 				printw("Invalid Request :(");
 			return 0;
@@ -273,7 +306,8 @@ FILE *fptr;
     int numRows = sizeof(art) / sizeof(art[0]);
 
     // Print the art to the screen
-    for (int i =0 ; i < numRows; i++) {
+    int i=0;
+    for (i =0 ; i < numRows; i++) {
 		move((rowc/2)-10+i, colc/2);
         printw("%s", art[i]);
     }
@@ -283,13 +317,82 @@ FILE *fptr;
 }
 
 
+int cancelFlight(char* flightnum){
+    FILE *fptr;
+    flight air, *airs;
+    int no_of_rec = 0, i;
 
+    fptr = fopen("AirList.txt", "r+");
 
+    if(fptr == NULL)
+    {
+        printf("Error opening file!\n");
+        exit(1);
+    }
 
+    while(fread(&air, sizeof(flight), 1, fptr)) 
+    {
+        
+        
+        no_of_rec++;//count the number of records (each record is a air type variable)
 
+    }
+    airs = (flight*)malloc(no_of_rec*sizeof(flight));
+    rewind(fptr);
 
-	
+    i=0;
+    while(fread(&air, sizeof(flight), 1, fptr))
+    {
+        
+        strcpy(airs[i].source, air.source);
+        strcpy(airs[i].destination, air.destination);
+        strcpy(airs[i].date, air.date);
+        strcpy(airs[i].time, air.time);
+        strcpy(airs[i].flightnum, air.flightnum);
+        airs[i].seatsFree = air.seatsFree;
+        i++;
+        
 
+    }
+    fclose(fptr);
+
+    for(int i=0; i<no_of_rec; i++){
+        if(strcmp(airs[i].flightnum, flightnum)==0){
+            printw("The number of seats avaiable: %d\n",airs[i].seatsFree);
+            printw("Enter number of seats to be cancelled:");
+            int numTicket;
+            scanw("%d",&numTicket);
+            if(numTicket >0){
+                airs[i].seatsFree=airs[i].seatsFree+numTicket;
+                printw("%d seats Cancelled Sucessfully !!",numTicket);
+
+                fptr = fopen("AirList.txt", "w");
+                if (fptr == NULL)
+                {
+                    printf("Error opening file!\n");
+                    free(airs);
+                    exit(1);
+                }
+                
+                for(i = 0 ; i < no_of_rec ; i++)
+                {
+                    fwrite(&airs[i], sizeof(flight), 1, fptr);      
+                }
+                fclose(fptr);
+                free(airs);
+                return 1;
+
+                
+            }else{
+                printw("Invalid Cancellation Request :(");
+                free(airs);
+                return 0;
+            }
+        }
+    }
+    printw("Flight not found");
+    return 0;
+}
 
 
 
