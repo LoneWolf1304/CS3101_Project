@@ -102,6 +102,8 @@ int sign_up()
     printw("New User Details");
     if (strcmp(acc_typ, "Admin") == 0)
     {
+        move((row/2)-7,(col/2)-4);
+    printw("New Admin Details");
         move((row/2)-4,(col/2)-4);
         printw("Enter your name: ");
         getstr(admin.name);
@@ -133,6 +135,8 @@ int sign_up()
     }
     else
     {
+        move((row/2)-7,(col/2)-4);
+    printw("New User Details");
     move((row/2)-3,(col/2)-4);
     printw("Enter your name: ");
     getstr(user.name);

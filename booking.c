@@ -234,7 +234,8 @@ typedef struct {
 	char name[50];
 	int age;
 	char gender[10];
-    char type[10]; //passenger type(adult, child, infant)
+    char type[10];
+    char meal[20]; //passenger type(adult, child, infant)
 } BOOKER;
 
 BOOKER bookers[MAX_BOOKINGS];
@@ -247,7 +248,7 @@ int bookFlight(char* flightnum)
     int no_of_rec = 0, i;
 	flight *totalflight;
 
-    fptr = fopen("AirList.txt", "r+");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
 
     if(fptr == NULL)
     {
@@ -294,7 +295,7 @@ int bookFlight(char* flightnum)
 		if(strcmp(totalflight[i].flightnum, flightnum)==0)
         {
 			printw("The number of seats avaiable: %d\n",totalflight[i].seatsFree);
-			printw("Enter number of seats to be booked:");
+			printw("Enter number of seats to be booked: ");
 			scanw("%d",&numTicket);
 
 			if(numTicket >0 && numTicket <= totalflight[i].seatsFree)
@@ -307,8 +308,10 @@ int bookFlight(char* flightnum)
                     scanw("%s",bookers[j].name);
                     printw("Enter age of passenger %d: ",j+1);
                     scanw("%d",&bookers[j].age);   
-                    printw("Gender (M/F):");
+                    printw("Enter gender (M/F): ");
                     scanw("%s",bookers[j].gender);
+                    printw("Enter meal option (Veg/Non-Veg/No): ");
+                    scanw("%s",bookers[j].meal);
 
                     if (bookers[j].age < 2){
                         strcpy(bookers[j].type, "Infant");
@@ -322,10 +325,11 @@ int bookFlight(char* flightnum)
                     }
                 }
                 
-                FILE *fptr;
+
+            FILE *fptr;
             int matrixflight[10][6], num; 
             char filename[100];
-            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project_Copy/Seat Matrix/%s.txt", flightnum);
+            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnum);
 
             fptr = fopen(filename, "r");
             for(int i=0; i<10; i++)
@@ -366,15 +370,18 @@ int bookFlight(char* flightnum)
             {
                 getstr(seat[i]);
             }
+            
             update_seat_matrix(filename, flightnum, seat, sizeof(seat)/sizeof(seat[0]));
-
-				fileReadWrite("AirList.txt", totalflight[i].flightnum, numTicket);
-				printw("Booked Sucessfully !!\n\n");
-
+             clear(); 
+                printw("Booking Successful !!\n\n");
+				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket);
+                printw("Ticket Summary Generated\n\n ");
+                printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
-                    printw("Name: %s, Age: %d, Gender: %s, %s\n",bookers[j].name,bookers[j].age,bookers[j].gender,bookers[j].type);
+                    printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, seat[j]);
 			    }
+                printw("Thank you for your booking! Bon Voyage!!\n");
                 return 1;
             }
             else
