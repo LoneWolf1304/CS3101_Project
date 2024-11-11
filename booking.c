@@ -18,6 +18,52 @@ typedef struct {
 } booking;
    // array of structures
 //int size = sizeof(totalflight)/sizeof(flight);
+void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size)
+{
+    FILE *fptr;
+    int matrixA[10][6], num;
+	//Accessing file a.txt and storing value in matrixA
+	fptr = fopen(filename, "r");
+	for(int i=0; i<10; i++){
+		for(int j=0; j<6; j++){
+			fscanf(fptr, "%d", &num);
+			matrixA[i][j] = num;
+		}
+	}
+	fclose(fptr);
+    for(int j=0; j<size; j++)
+    {
+        int row = seats[j][0]-49;
+        int col = seats[j][1] - 'A';
+        matrixA[row][col] = 1;
+    }
+
+
+
+
+    fptr = fopen(filename, "w");
+    if (fptr == NULL) {
+        printf("Error opening file %s\n", filename);
+        return;
+    }
+
+    // Write a 10x6 matrix of random numbers to the file
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 6; j++) {
+            {
+                // fprintf(fptr, " %d ", rand() % 2);
+                fprintf(fptr, " %d ", matrixA[i][j]);
+            } // Add a space between numbers
+        }
+        fprintf(fptr, "\n");
+    }
+
+    // Close the file
+    fclose(fptr);
+}
+
+
+
 
 void fileReadWrite(char* filename, char* airnum, int seats)
 
@@ -193,9 +239,10 @@ typedef struct {
 
 BOOKER bookers[MAX_BOOKINGS];
 
-int bookFlight(char* flightnum){
+int bookFlight(char* flightnum)
+{
 
-FILE *fptr;
+    FILE *fptr;
     flight air, *airs;
     int no_of_rec = 0, i;
 	flight *totalflight;
@@ -242,16 +289,20 @@ FILE *fptr;
 
 	int numTicket;
 
-	for(int i=0; i< size;i++){
-		if(strcmp(totalflight[i].flightnum, flightnum)==0){
+	for(int i=0; i< size;i++)
+    {
+		if(strcmp(totalflight[i].flightnum, flightnum)==0)
+        {
 			printw("The number of seats avaiable: %d\n",totalflight[i].seatsFree);
 			printw("Enter number of seats to be booked:");
 			scanw("%d",&numTicket);
 
-			if(numTicket >0 && numTicket <= totalflight[i].seatsFree){
+			if(numTicket >0 && numTicket <= totalflight[i].seatsFree)
+            {
 				BOOKER bookers[numTicket];
 				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
-                for(int j=0; j<numTicket; j++){
+                for(int j=0; j<numTicket; j++)
+                {
                     printw("Enter name of passenger %d: ",j+1);
                     scanw("%s",bookers[j].name);
                     printw("Enter age of passenger %d: ",j+1);
@@ -260,34 +311,81 @@ FILE *fptr;
                     scanw("%s",bookers[j].gender);
 
                     if (bookers[j].age < 2){
-                        strcpy(bookers[j].type, "infant");
+                        strcpy(bookers[j].type, "Infant");
             
                     }
                     else if (bookers[j].age < 12){
-                        strcpy(bookers[j].type, "child");
+                        strcpy(bookers[j].type, "Child");
                     }
                     else{
-                        strcpy(bookers[j].type, "adult");
+                        strcpy(bookers[j].type, "Adult");
                     }
                 }
                 
+                FILE *fptr;
+            int matrixflight[10][6], num; 
+            char filename[100];
+            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project_Copy/Seat Matrix/%s.txt", flightnum);
+
+            fptr = fopen(filename, "r");
+            for(int i=0; i<10; i++)
+            {
+                for(int j=0; j<6; j++)
+                {
+                    fscanf(fptr, "%d", &num);
+                    matrixflight[i][j] = num;
                 }
+            }
+            fclose(fptr);
+            //Printing flight matrix
+            printw("\t  Front\n");
+            printw("\tA B C  D E F\n\n\n");
+            
+            for(int i=0; i<10; i++)
+            {
+                
+                for(int j=0; j<6; j++)
+                {
+                    if(j==3)
+                    {
+                        printw(" %d ", matrixflight[i][j]);
+                    }
+                    else if(j==0)
+                    {
+                        printw("%d\t%d ", (i+1), matrixflight[i][j]);
+                    }
+                    else
+                    printw("%d ", matrixflight[i][j]);
+                }
+                printw("\n");
+            }
+            printw("\t Rear\n");
+            printw("Enter seat numbers:\n");
+            char seat[numTicket][10];
+            for(int i=0; i<numTicket; i++)
+            {
+                getstr(seat[i]);
+            }
+            update_seat_matrix(filename, flightnum, seat, sizeof(seat)/sizeof(seat[0]));
 
 				fileReadWrite("AirList.txt", totalflight[i].flightnum, numTicket);
-				printw("Booked Sucessfully !!");
+				printw("Booked Sucessfully !!\n\n");
 
-                for(int j=0; j<numTicket; j++){
+                for(int j=0; j<numTicket; j++)
+                {
                     printw("Name: %s, Age: %d, Gender: %s, %s\n",bookers[j].name,bookers[j].age,bookers[j].gender,bookers[j].type);
-				return 1;
-			}
-        }
-            else{
+			    }
+                return 1;
+            }
+            else
+            {
 
 				printw("Invalid Request :(");
 			return 0;
 			}
 		}
 	}
+
 	int rowc, colc;
     	getmaxyx(stdscr,rowc,colc);
 		const char *art[] = {
@@ -306,7 +404,7 @@ FILE *fptr;
     int numRows = sizeof(art) / sizeof(art[0]);
 
     // Print the art to the screen
-    int i=0;
+    //int i=0;
     for (i =0 ; i < numRows; i++) {
 		move((rowc/2)-10+i, colc/2);
         printw("%s", art[i]);
