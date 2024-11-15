@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "booking.c"
+#include "cancel_flight.c"
 
 int admin_login()
 {
@@ -88,6 +89,7 @@ int user_login()
             clear();
             printw("1. Search Flights\n");
             printw("2. Book Tickets\n");
+            printw("3. Cancel Tickets\n");
             scanw("%d", &choice);
             if(choice == 1)
             {
@@ -108,6 +110,13 @@ int user_login()
                 printw("Enter flight number: ");
                 getstr(flightnum);
                 bookFlight(flightnum);
+            }
+            else if(choice == 3)
+            {
+                char pnr[50];
+                printw("Enter Ticket Number: ");
+                getstr(pnr);
+                cancelBooking(pnr);
             }
             break;
         }

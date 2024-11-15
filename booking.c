@@ -18,7 +18,7 @@ typedef struct {
 } booking;
    // array of structures
 //int size = sizeof(totalflight)/sizeof(flight);
-void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size)
+void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size, char* mode)
 {
     FILE *fptr;
     int matrixA[10][6], num;
@@ -31,15 +31,28 @@ void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size
 		}
 	}
 	fclose(fptr);
-    for(int j=0; j<size; j++)
+
+    if(strcmp(mode, "add")==0)
     {
-        int row = seats[j][0]-49;
-        int col = seats[j][1] - 'A';
-        matrixA[row][col] = 1;
+        for(int j=0; j<size; j++)
+        {
+            int row = seats[j][0]-49;
+            int col = seats[j][1] - 'A';
+            matrixA[row][col] = 1;
+        }
     }
+    else if(strcmp(mode, "remove")==0)
+    {
+        for(int j=0; j<size; j++)
+        {
+            int row = seats[j][0]-49;
+            int col = seats[j][1] - 'A';
+            matrixA[row][col] = 0;
+        }
 
-
-
+    }
+    
+    
 
     fptr = fopen(filename, "w");
     if (fptr == NULL) {
@@ -65,7 +78,7 @@ void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size
 
 
 
-void fileReadWrite(char* filename, char* airnum, int seats)
+void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
 
 {
     FILE *fptr;
@@ -93,26 +106,49 @@ void fileReadWrite(char* filename, char* airnum, int seats)
     rewind(fptr);//going to the beginning of the file
     
     i = 0;
-
-    while(fread(&air, sizeof(flight), 1, fptr)) //reading each record
-    {
-        //printf("Current position: %ld  ", ftell(fptr));
-        //printf ("Title = %s id = %s stock = %d\n", air.title, 
-        //air.id, air.no); 
-        
-        strcpy(airs[i].source, air.source);
-		strcpy(airs[i].destination, air.destination);
-		strcpy(airs[i].date, air.date);
-		strcpy(airs[i].time, air.time);
-		strcpy(airs[i].flightnum, air.flightnum);
-    	airs[i].seatsFree = air.seatsFree;
-    	if(strcmp(air.flightnum, airnum) == 0)//check if this is the record to be updated
+        while(fread(&air, sizeof(flight), 1, fptr)) //reading each record
         {
-        	airs[i].seatsFree -=seats;//updating
-		}
-    	
-    	i++;
-    }  
+            //printf("Current position: %ld  ", ftell(fptr));
+            //printf ("Title = %s id = %s stock = %d\n", air.title, 
+            //air.id, air.no); 
+            
+            strcpy(airs[i].source, air.source);
+            strcpy(airs[i].destination, air.destination);
+            strcpy(airs[i].date, air.date);
+            strcpy(airs[i].time, air.time);
+            strcpy(airs[i].flightnum, air.flightnum);
+            airs[i].seatsFree = air.seatsFree;
+            if(strcmp(air.flightnum, airnum) == 0)//check if this is the record to be updated
+            {
+                if(strcmp(mode, "add")==0)
+                    airs[i].seatsFree -=seats;//updating
+                    else if(strcmp(mode, "remove")==0)
+                    airs[i].seatsFree +=seats;//updating
+            }
+            i++;
+        }
+    // else if(strcpy(mode, "remove")==0)
+    // {
+    //     while(fread(&air, sizeof(flight), 1, fptr)) //reading each record
+    //     {
+    //         //printf("Current position: %ld  ", ftell(fptr));
+    //         //printf ("Title = %s id = %s stock = %d\n", air.title, 
+    //         //air.id, air.no); 
+            
+    //         strcpy(airs[i].source, air.source);
+    //         strcpy(airs[i].destination, air.destination);
+    //         strcpy(airs[i].date, air.date);
+    //         strcpy(airs[i].time, air.time);
+    //         strcpy(airs[i].flightnum, air.flightnum);
+    //         airs[i].seatsFree = air.seatsFree;
+    //         if(strcmp(air.flightnum, airnum) == 0)//check if this is the record to be updated
+    //         {
+    //             airs[i].seatsFree +=seats;//updating
+    //         }
+            
+    //         i++;
+    //     }  
+    //}
 
     fclose(fptr);
     
@@ -235,7 +271,9 @@ typedef struct {
 	char gender[10];
     char type[10];
     char meal[20];
-    char pnr[20]; //passenger type(adult, child, infant)
+    char pnr[20];
+    char seat[20];
+    char flightnum[20]; //passenger type(adult, child, infant)
 } BOOKER;
 
 BOOKER bookers[MAX_BOOKINGS];
@@ -314,7 +352,9 @@ int bookFlight(char* flightnum)
     {
 		if(strcmp(totalflight[i].flightnum, flightnum)==0)
         {   
-			printw("The number of seats avaiable: %d\n",totalflight[i].seatsFree);
+			printw("The number of seats available: %d\n",totalflight[i].seatsFree);
+            printw("\nPress any key to continue book tickets!");
+            getch();
             clear();
 			printw("Enter number of seats to be booked: ");
 			scanw("%d",&numTicket);
@@ -394,28 +434,32 @@ int bookFlight(char* flightnum)
 
             
             printw("Enter seat numbers:\n");
-            char seat[numTicket][10];
+            char seats[numTicket][10];
             for(int i=0; i<numTicket; i++)
             {
-                getstr(seat[i]);
+                getstr(bookers[i].seat);
+                strcpy(seats[i], bookers[i].seat);
+                strcpy(bookers[i].flightnum,flightnum);
             }
-            int pn = rand()%10000;
+            int pn = rand() % 900+100;
             char pnrs[20]; 
             snprintf(pnrs, sizeof(pnrs), "%d", pn);
+            strcat(pnrs, flightnum);
             for(int i=0; i<numTicket; i++)
             {
                 strcpy(bookers[i].pnr, pnrs);
             }
-            update_seat_matrix(filename, flightnum, seat, sizeof(seat)/sizeof(seat[0]));
+            update_seat_matrix(filename, flightnum, seats, sizeof(seats)/sizeof(seats[0]), "add");
              clear(); 
                 printw("Booking Successful !!\n\n");
                 printw("Ticket Summary Generated\n\n ");
-				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket);
+				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
                 printw("Ticket Number: %s \n\n", pnrs);
+                printw("Flight Number: %s \n\n", flightnum);
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
-                    printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, seat[j]);
+                    printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat);
 			    }
                 printw("Thank you for your booking! Bon Voyage!!\n");
 
