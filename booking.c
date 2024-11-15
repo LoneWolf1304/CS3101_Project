@@ -83,8 +83,7 @@ void fileReadWrite(char* filename, char* airnum, int seats)
 
     while(fread(&air, sizeof(flight), 1, fptr)) 
     {
-        
-        
+
         no_of_rec++;//count the number of records (each record is a air type variable)
 
     }
@@ -241,6 +240,26 @@ typedef struct {
 
 BOOKER bookers[MAX_BOOKINGS];
 
+
+void addBooker(char *filename, BOOKER booker[], int numTicket, char *flightnum)
+{
+    FILE *fptr;
+    fptr = fopen(filename, "a");
+    if(fptr == NULL)
+    {
+        printf("Error opening file!\n");
+    }
+    for(int i=0; i<numTicket; i++)
+    {
+        fwrite(&booker[i], sizeof(BOOKER), 1, fptr);     
+    }
+    fclose(fptr);
+}
+
+
+
+
+
 int bookFlight(char* flightnum)
 {
 
@@ -380,24 +399,31 @@ int bookFlight(char* flightnum)
             {
                 getstr(seat[i]);
             }
-            
+            int pn = rand()%10000;
+            char pnrs[20]; 
+            snprintf(pnrs, sizeof(pnrs), "%d", pn);
+            for(int i=0; i<numTicket; i++)
+            {
+                strcpy(bookers[i].pnr, pnrs);
+            }
             update_seat_matrix(filename, flightnum, seat, sizeof(seat)/sizeof(seat[0]));
              clear(); 
                 printw("Booking Successful !!\n\n");
                 printw("Ticket Summary Generated\n\n ");
 				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket);
-                printw("Ticket Number\n\n");
+                printw("Ticket Number: %s \n\n", pnrs);
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
                     printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, seat[j]);
 			    }
                 printw("Thank you for your booking! Bon Voyage!!\n");
+
+                addBooker("Booking_List.txt", bookers, numTicket, flightnum);
                 return 1;
             }
             else
             {
-
 				printw("Invalid Request :(");
 			return 0;
 			}
@@ -431,6 +457,14 @@ int bookFlight(char* flightnum)
 	printw("Flight not found");
 	return 0;
 }
+
+
+
+
+
+
+
+
 
 
 
