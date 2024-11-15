@@ -235,7 +235,8 @@ typedef struct {
 	int age;
 	char gender[10];
     char type[10];
-    char meal[20]; //passenger type(adult, child, infant)
+    char meal[20];
+    char pnr[20]; //passenger type(adult, child, infant)
 } BOOKER;
 
 BOOKER bookers[MAX_BOOKINGS];
@@ -293,14 +294,60 @@ int bookFlight(char* flightnum)
 	for(int i=0; i< size;i++)
     {
 		if(strcmp(totalflight[i].flightnum, flightnum)==0)
-        {
+        {   
 			printw("The number of seats avaiable: %d\n",totalflight[i].seatsFree);
+            clear();
 			printw("Enter number of seats to be booked: ");
 			scanw("%d",&numTicket);
 
 			if(numTicket >0 && numTicket <= totalflight[i].seatsFree)
             {
 				BOOKER bookers[numTicket];
+                FILE *fptr;
+            int matrixflight[10][6], num; 
+            char filename[100];
+            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnum);
+
+            fptr = fopen(filename, "r");
+            for(int i=0; i<10; i++)
+            {
+                for(int j=0; j<6; j++)
+                {
+                    fscanf(fptr, "%d", &num);
+                    matrixflight[i][j] = num;
+                }
+            }
+            fclose(fptr);
+            //Printing flight matrix
+            printw("\n\t  Front\n\n");
+            printw("\tA B C   D E F\n\n\n");
+            
+            for(int i=0; i<10; i++)
+            {
+                
+                for(int j=0; j<6; j++)
+                {
+                    if(j==3)
+                    {
+                        printw("  %d ", matrixflight[i][j]);
+                    }
+                    else if(j==0)
+                    {
+                        printw("%d\t%d ", (i+1), matrixflight[i][j]);
+                    }
+                    else
+                    printw("%d ", matrixflight[i][j]);
+                }
+                printw("\n");
+            }
+            printw("\n\t Rear\n");
+
+
+
+
+
+
+
 				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
                 for(int j=0; j<numTicket; j++)
                 {
@@ -326,44 +373,7 @@ int bookFlight(char* flightnum)
                 }
                 
 
-            FILE *fptr;
-            int matrixflight[10][6], num; 
-            char filename[100];
-            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnum);
-
-            fptr = fopen(filename, "r");
-            for(int i=0; i<10; i++)
-            {
-                for(int j=0; j<6; j++)
-                {
-                    fscanf(fptr, "%d", &num);
-                    matrixflight[i][j] = num;
-                }
-            }
-            fclose(fptr);
-            //Printing flight matrix
-            printw("\t  Front\n");
-            printw("\tA B C  D E F\n\n\n");
             
-            for(int i=0; i<10; i++)
-            {
-                
-                for(int j=0; j<6; j++)
-                {
-                    if(j==3)
-                    {
-                        printw(" %d ", matrixflight[i][j]);
-                    }
-                    else if(j==0)
-                    {
-                        printw("%d\t%d ", (i+1), matrixflight[i][j]);
-                    }
-                    else
-                    printw("%d ", matrixflight[i][j]);
-                }
-                printw("\n");
-            }
-            printw("\t Rear\n");
             printw("Enter seat numbers:\n");
             char seat[numTicket][10];
             for(int i=0; i<numTicket; i++)
@@ -374,8 +384,9 @@ int bookFlight(char* flightnum)
             update_seat_matrix(filename, flightnum, seat, sizeof(seat)/sizeof(seat[0]));
              clear(); 
                 printw("Booking Successful !!\n\n");
-				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket);
                 printw("Ticket Summary Generated\n\n ");
+				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket);
+                printw("Ticket Number\n\n");
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
@@ -421,83 +432,6 @@ int bookFlight(char* flightnum)
 	return 0;
 }
 
-
-int cancelFlight(char* flightnum){
-    FILE *fptr;
-    flight air, *airs;
-    int no_of_rec = 0, i;
-
-    fptr = fopen("AirList.txt", "r+");
-
-    if(fptr == NULL)
-    {
-        printf("Error opening file!\n");
-        exit(1);
-    }
-
-    while(fread(&air, sizeof(flight), 1, fptr)) 
-    {
-        
-        
-        no_of_rec++;//count the number of records (each record is a air type variable)
-
-    }
-    airs = (flight*)malloc(no_of_rec*sizeof(flight));
-    rewind(fptr);
-
-    i=0;
-    while(fread(&air, sizeof(flight), 1, fptr))
-    {
-        
-        strcpy(airs[i].source, air.source);
-        strcpy(airs[i].destination, air.destination);
-        strcpy(airs[i].date, air.date);
-        strcpy(airs[i].time, air.time);
-        strcpy(airs[i].flightnum, air.flightnum);
-        airs[i].seatsFree = air.seatsFree;
-        i++;
-        
-
-    }
-    fclose(fptr);
-
-    for(int i=0; i<no_of_rec; i++){
-        if(strcmp(airs[i].flightnum, flightnum)==0){
-            printw("The number of seats avaiable: %d\n",airs[i].seatsFree);
-            printw("Enter number of seats to be cancelled:");
-            int numTicket;
-            scanw("%d",&numTicket);
-            if(numTicket >0){
-                airs[i].seatsFree=airs[i].seatsFree+numTicket;
-                printw("%d seats Cancelled Sucessfully !!",numTicket);
-
-                fptr = fopen("AirList.txt", "w");
-                if (fptr == NULL)
-                {
-                    printf("Error opening file!\n");
-                    free(airs);
-                    exit(1);
-                }
-                
-                for(i = 0 ; i < no_of_rec ; i++)
-                {
-                    fwrite(&airs[i], sizeof(flight), 1, fptr);      
-                }
-                fclose(fptr);
-                free(airs);
-                return 1;
-
-                
-            }else{
-                printw("Invalid Cancellation Request :(");
-                free(airs);
-                return 0;
-            }
-        }
-    }
-    printw("Flight not found");
-    return 0;
-}
 
 
 
