@@ -45,18 +45,33 @@ int chat(char *name)
             ptr=strtok(NULL," ");
             i++;
         }
-        int num = indexOf(keywords, "how", sizeof(keywords)/sizeof(keywords[0]));
+        int num = indexOf(keywords, "how", i);
         if(num>-1)
         {
-            num = indexOf(keywords, "book", sizeof(keywords)/sizeof(keywords[0]));
-            if(num>-1)
-                return 2;
-            num = indexOf(keywords, "cancel", sizeof(keywords)/sizeof(keywords[0]));
-             if(num>-1)
+            int num1 = indexOf(keywords, "cancel", i);
+            if(num1>-1)
+            {
                 return 1;
+            }
+            else
+            {
+            int num2 = indexOf(keywords, "book", i);
+            if(num2>-1)
+            {
+                return 2;
+            }
+            }
         }
     }
+    return 112;
 }
+
+
+// void main()
+// {
+//     char *key[]= {"how", "can","I", "book", "a", "flight"};
+//     printf("index of book %d",indexOf(key, "book", 6));
+// }
 
 
 

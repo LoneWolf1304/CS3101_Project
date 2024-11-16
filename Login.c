@@ -148,10 +148,13 @@ int user_login()
             else if(choice == 4)
             {
                 clear();
+                int counter=1;
                 printw("Hello %s! I am Bandhu, your flight assistant. How can I help you today?\n", name);
                 chatting:
-                    printw("Hello %s! Is there anything else that I can help you with?\n", name);
+                    if(counter>1)
+                    printw("Is there anything else that I can help you with?\n");
                     int f = chat(name);
+                    counter+=1;
                 switch(f)
                 {
                     case 1: 
@@ -161,14 +164,17 @@ int user_login()
                     cancelBooking(pnr);
                     goto chatting;
                     break;
+
                     case 2: 
                     char flightnum[50];
-                printw("Please enter the flight number which you want to book: ");
-                getstr(flightnum);
-                bookFlight(flightnum);
-                printw("Your ticket has been booked!\n"); 
-                goto chatting;
-                break;
+                    printw("Please enter the flight number which you want to book: ");
+                    getstr(flightnum);
+                    bookFlight(flightnum);
+                    printw("Your ticket has been booked!\n"); 
+                    goto chatting;
+                    break;
+
+                    default: printw("Thanks!");
                 }
             }
             break;
