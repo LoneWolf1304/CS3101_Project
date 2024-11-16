@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "booking.c"
 #include "cancel_flight.c"
+#include "admin.c"
 
 int admin_login()
 {
@@ -37,6 +38,29 @@ int admin_login()
         {
             move((row/2)-1,(col/2)-3);
             printw("Login successful\n");
+            clear();
+            printw("1. Add Flight\n");
+            printw("2. Cancel Flight\n");
+            printw("3. Change Flight Data\n");
+            printw("4. View Flights\n");
+            scanw("%d", &choice);
+
+            if(choice == 1)
+            {
+                addFlight();
+            }
+            else if(choice == 2)
+            {
+                deleteFlight();
+            }
+            else if(choice == 3)
+            {
+                updateFlight();
+            }
+            else if(choice == 4){
+                loadFlight();
+                displayAllFlights();
+            }
             break;
         }
         else
@@ -91,6 +115,9 @@ int user_login()
             printw("2. Book Tickets\n");
             printw("3. Cancel Tickets\n");
             scanw("%d", &choice);
+
+            loadFlight();
+
             if(choice == 1)
             {
                 char source[100], dest[100], date[100], time[50];
