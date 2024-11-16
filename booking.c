@@ -182,7 +182,7 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
     flight air;
 	flight *totalflight;
     int no_of_rec = 0, i;
-    fptr = fopen("AirList.txt", "r");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
 
     if(fptr == NULL)
     {
@@ -192,7 +192,6 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
 
     while(fread(&air, sizeof(flight), 1, fptr)) 
     {
-        
         
         no_of_rec++;//count the number of records (each record is a air type variable)
 

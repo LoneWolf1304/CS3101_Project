@@ -58,7 +58,7 @@ int admin_login()
                 updateFlight();
             }
             else if(choice == 4){
-                loadFlight();
+                //loadFlight();
                 displayAllFlights();
             }
             break;
@@ -72,8 +72,6 @@ int admin_login()
     }
     fclose(fptr);
     return 0;
-
-
 
 }
 int user_login()
@@ -116,7 +114,7 @@ int user_login()
             printw("3. Cancel Tickets\n");
             scanw("%d", &choice);
 
-            loadFlight();
+            //loadFlight();
 
             if(choice == 1)
             {
