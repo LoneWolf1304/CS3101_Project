@@ -4,6 +4,7 @@
 #include "booking.c"
 #include "cancel_flight.c"
 #include "admin.c"
+#include "Bandhu_chatbot.c"
 
 int admin_login()
 {
@@ -112,6 +113,7 @@ int user_login()
             printw("1. Search Flights\n");
             printw("2. Book Tickets\n");
             printw("3. Cancel Tickets\n");
+            printw("4. Bandhu -- the chat assistant\n");
             scanw("%d", &choice);
 
             //loadFlight();
@@ -142,6 +144,32 @@ int user_login()
                 printw("Enter Ticket Number: ");
                 getstr(pnr);
                 cancelBooking(pnr);
+            }
+            else if(choice == 4)
+            {
+                clear();
+                printw("Hello %s! I am Bandhu, your flight assistant. How can I help you today?\n", name);
+                chatting:
+                    printw("Hello %s! Is there anything else that I can help you with?\n", name);
+                    int f = chat(name);
+                switch(f)
+                {
+                    case 1: 
+                    char pnr[50];
+                    printw("Please enter the ticket number that you want to cancel: ");
+                    getstr(pnr);
+                    cancelBooking(pnr);
+                    goto chatting;
+                    break;
+                    case 2: 
+                    char flightnum[50];
+                printw("Please enter the flight number which you want to book: ");
+                getstr(flightnum);
+                bookFlight(flightnum);
+                printw("Your ticket has been booked!\n"); 
+                goto chatting;
+                break;
+                }
             }
             break;
         }

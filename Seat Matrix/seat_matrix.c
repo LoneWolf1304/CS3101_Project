@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-void seat(char flightnumb[], int seats) {
+void seat(char flightnumb[], int seats) 
+{
     FILE *fptr;
     char filename[20];  // Buffer to store the filename
 
