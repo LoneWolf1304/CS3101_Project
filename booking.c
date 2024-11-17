@@ -189,7 +189,7 @@ void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
 
 
 
-void searchFlight(char* source,  char* destination,  char* date, char* tim){
+void searchFlight(char* source,  char* destination,  char* date){
 	
 	FILE *fptr;
     flight air;
@@ -240,14 +240,23 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
 	int size = no_of_rec;
 	  //function to search flights
 	int flag=0;
+    int x,y;
+    getmaxyx(stdscr, y, x);
+    move(y/2-1, x/2-25);
 	printw("Available flight from %s to %s on %s:\n",source,destination,date);
-	for (int i =0; i < size; i++){
-		if (strcmp(totalflight[i].source,source) == 0 &&
+	for (int i =0; i < size; i++)
+    {
+		// if(strcmp(totalflight[i].source,source) == 0 &&
+		//    strcmp(totalflight[i].destination,destination) == 0 &&
+		//    strcmp(totalflight[i].date,date) == 0 && strcmp(totalflight[i].time,tim) == 0)
+        if(strcmp(totalflight[i].source,source) == 0 &&
 		   strcmp(totalflight[i].destination,destination) == 0 &&
-		   strcmp(totalflight[i].date,date) == 0 && strcmp(totalflight[i].time,tim) == 0){
-
+		   strcmp(totalflight[i].date,date) == 0)
+        {
         char flight_details[300];
-        snprintf(flight_details, sizeof(flight_details), "Flight Number: %s, Seats Available: %d", totalflight[i].flightnum, totalflight[i].seatsFree);
+        move(y/2+1+flag, x/2-25);
+        // snprintf(flight_details, sizeof(flight_details), "Flight Number: %s\t Seats Available: %d \t Time of Departure: %s", totalflight[i].flightnum, totalflight[i].seatsFree, totalflight[i].time);
+        printw("Flight Number: %s\t Seats Available: %d \t Time of Departure: %s", totalflight[i].flightnum, totalflight[i].seatsFree, totalflight[i].time);
 
 		//printw("Flight Available !\n");
 		printw(flight_details);

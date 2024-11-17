@@ -211,7 +211,8 @@ int user_login()
             if(choice == 1)
             {
                 char source[100], dest[100], date[100], time[50];
-
+                move(row/2-8, col/2-1);
+                printw("Flight Search");
                 move((row/2)-6,(col/2)-3);
                 printw("Enter source: ");
                 getstr(source);
@@ -251,20 +252,19 @@ int user_login()
                     return 0;
                 }
 
-                move((row/2)-3,(col/2)-3);
-                printw("Enter time:");
-                getstr(time);
-                if(empty_input(time))
-                {   
-                    move((row/2)-1,(col/2)-3);
-                    printw("Time cannot be empty\n");
+                // move((row/2)-3,(col/2)-3);
+                // printw("Enter time:");
+                // getstr(time);
+                // if(empty_input(time))
+                // {   
+                //     move((row/2)-1,(col/2)-3);
+                //     printw("Time cannot be empty\n");
 
-                    move((row/2),(col/2)-3);
-                    printw("Press any key to go to main interface");
-                    return 0;
-                }
-
-                searchFlight(source, dest, date, time);
+                //     move((row/2),(col/2)-3);
+                //     printw("Press any key to go to main interface");
+                //     return 0;
+                // }
+                searchFlight(source, dest, date);
             }
             else if(choice == 2)
             {
