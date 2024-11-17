@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+
+
 typedef struct user{
 char name[50];
 char pwd[50];
@@ -97,9 +100,12 @@ int sign_up()
     move((row/2)-2,(col/2)-4);
     printw("Enter account type (User/Admin): ");
     getstr(acc_typ);
+    
+
     clear();
     move((row/2)-7,(col/2)-4);
     printw("New User Details");
+    
     if (strcmp(acc_typ, "Admin") == 0)
     {
         move((row/2)-7,(col/2)-4);

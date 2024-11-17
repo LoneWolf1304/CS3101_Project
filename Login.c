@@ -7,10 +7,8 @@
 #include "Bandhu_chatbot.c"
 
 
-int empty_input(char *str)  //check if entry in empty string
-{
-    return str==NULL || strlen(str)==0;
-}
+
+
 
 
 int admin_login()

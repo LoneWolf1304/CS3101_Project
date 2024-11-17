@@ -9,6 +9,7 @@ typedef struct {
 	char destination [100];
 	char date[50]; 
     char time[50];
+	
 } flight;
 
 // flight totalflight[50]=

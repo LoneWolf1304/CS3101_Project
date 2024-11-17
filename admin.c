@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<ncurses.h>
-#include "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/seat_matrix.c"
+#include "./Seat Matrix/seat_matrix.c"
 
 
 //add additional flight as an admin
@@ -14,7 +14,7 @@ void fileAdminWrite(){
     FILE *fptr;
     int i;
 
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "a");
+    fptr = fopen("./Seat Matrix/AirList.txt", "a");
 
     if(fptr == NULL)
     {
@@ -28,7 +28,7 @@ void fileAdminWrite(){
 
 
 void loadFlight(){
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
+    FILE *fptr =fopen("./Seat Matrix/AirList.txt", "r");
     if(fptr == NULL)
     {
         printw("Error opening file!\n");
@@ -114,7 +114,7 @@ void addFlight(){
     
     //totalflight[no_of_records] = newFlight;
     FILE *fptr;
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "a");
+    fptr = fopen("./Seat Matrix/AirList.txt", "a");
 
     move(row/2-1, col/2-10);
     printw("Flight added successfully.\n");
@@ -143,7 +143,7 @@ void updateFlight(){
 
 
 
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
+    FILE *fptr =fopen("./Seat Matrix/AirList.txt", "r+");
     if(fptr == NULL)
     {
         printw("Error opening file!\n");
@@ -254,7 +254,7 @@ void deleteFlight(){
     //     }
     // }
 
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
+    FILE *fptr =fopen("./Seat Matrix/AirList.txt", "r+");
     if(fptr == NULL)
     {
         print_centre("Error opening file!\n");
@@ -283,7 +283,7 @@ void deleteFlight(){
     }
     fclose(fptr);
 
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "w");
+    fptr = fopen("./Seat Matrix/AirList.txt", "w");
     if(fptr == NULL)
     {
         print_centre("Error opening file!\n");
@@ -315,7 +315,7 @@ void displayAllFlights()
 {
 
     flight details;
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
+    FILE *fptr =fopen("./Seat Matrix/AirList.txt", "r");
     if(fptr == NULL)
     {
         print_centre("Error opening file!\n");

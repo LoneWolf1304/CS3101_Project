@@ -145,7 +145,7 @@ int cancelBooking(char* tick){
 
     case 'y':
             char filename[100];
-            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", bookings[index].flightnum);
+            snprintf(filename, sizeof(filename), "/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/Seat Matrix/%s.txt", bookings[index].flightnum);
             update_seat_matrix(filename, bookings[index].flightnum, seats, sizeof(seats)/sizeof(seats[0]), "remove");
 
             for(int i=0; i<no_of_rec; i++)
@@ -157,7 +157,7 @@ int cancelBooking(char* tick){
             }
             move(row/2+4+no_of_rec, col/2-20);
             printw("Booking Cancelled Successfully!!\n");
-            fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", bookings[index].flightnum, no_of_rec, "remove");
+            fileReadWrite("./Seat Matrix/AirList.txt", bookings[index].flightnum, no_of_rec, "remove");
             
             break;
 

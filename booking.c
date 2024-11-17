@@ -5,6 +5,14 @@
 #include<time.h>
 #include "airplane_list.h"
 
+#define ADULT_PRICE 5000
+#define CHILD_PRICE 3000
+#define INFANT_PRICE 0
+
+int empty_input(const char *str) {
+    return str == NULL || str[0] == '\0';
+}
+
 #define MAX_FLIGHTS 50
 #define MAX_SEATS 60
 #define MAX_BOOKINGS 50
@@ -195,7 +203,7 @@ void searchFlight(char* source,  char* destination,  char* date){
     flight air;
 	flight *totalflight;
     int no_of_rec = 0, i;
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
+    fptr = fopen("./Seat Matrix/AirList.txt", "r");
 
     if(fptr == NULL)
     {
@@ -346,7 +354,7 @@ int bookFlight(char* flightnum)
     int no_of_rec = 0, i;
 	flight *totalflight;
 
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
+    fptr = fopen("./Seat Matrix/AirList.txt", "r+");
 
     if(fptr == NULL)
     {
@@ -412,7 +420,7 @@ int bookFlight(char* flightnum)
                 FILE *fptr;
             int matrixflight[10][6], num; 
             char filename[100];
-            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnum);
+            snprintf(filename, sizeof(filename), "/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/Seat Matrix/%s.txt", flightnum);
 
             fptr = fopen(filename, "r");
             for(int i=0; i<10; i++)
@@ -451,7 +459,7 @@ int bookFlight(char* flightnum)
 
                 int x,y;
                 getmaxyx(stdscr, y, x);
-				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
+
                 for(int j=0; j<numTicket; j++)
                 {   
                     move(y/2-12+5*j, x/2-5);
@@ -470,13 +478,16 @@ int bookFlight(char* flightnum)
 
                     if (bookers[j].age < 2){
                         strcpy(bookers[j].type, "Infant");
+                        bookers[j].price = INFANT_PRICE;
             
                     }
                     else if (bookers[j].age < 12){
                         strcpy(bookers[j].type, "Child");
+                        bookers[j].price = CHILD_PRICE;
                     }
                     else{
                         strcpy(bookers[j].type, "Adult");
+                        bookers[j].price = ADULT_PRICE;
                     }
                 }
                 
@@ -484,12 +495,15 @@ int bookFlight(char* flightnum)
             move(y/2-8+4*numTicket, x/2-5);
             printw("Enter seat numbers:\n");
             char seats[numTicket][10];
+            double total_price = 0.0;
+
             for(int i=0; i<numTicket; i++)
             {
                 move(y/2-7+4*numTicket+1+i, x/2-5);
                 getstr(bookers[i].seat);
                 strcpy(seats[i], bookers[i].seat);
                 strcpy(bookers[i].flightnum,flightnum);
+                total_price += bookers[i].price;
             }
             int pn = (rand() % 900)+100;
             char pnrs[20]; 
@@ -508,17 +522,17 @@ int bookFlight(char* flightnum)
                 move((row/2)-3,(col/2)-15);
                 printw("Ticket Summary Generated\n\n ");
 
-				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
+				fileReadWrite("./Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
                 move((row/2)-1,(col/2)-27);
                 printw("Ticket Number: %s \n\n", pnrs);
                 move((row/2),(col/2)-27);
                 printw("Flight Number: %s \n\n", flightnum);
                 move((row/2)+3,(col/2)-27);
-                printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
+                printw("Name\tGender\tAge\tType\tMeal\tSeat No.\t\t Price:\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
                     move((row/2)+4+j,(col/2)-27);
-                    printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat);
+                    printw("%s\t%s\t%d\t%s\t%s\t%s\t\t%0.2f\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat,bookers[j].price);
 			    }
                 move((row/2)+numTicket+8,(col/2)-27);
                 printw("Thank you for your booking! Bon Voyage!!\n");
