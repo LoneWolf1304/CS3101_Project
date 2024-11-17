@@ -78,6 +78,9 @@ int admin_login()
             move((row/2)-1,(col/2)-3);
             printw("Login successful\n");
             clear();
+            adm_ut:
+            move((row/2)-10,(col/2)-6);
+            printw("Admin Utilities");
 
             move((row/2)-8,(col/2)-6);
             printw("1. Add Flight\n");
@@ -91,6 +94,8 @@ int admin_login()
             move((row/2)-5,(col/2)-6);
             printw("4. View Flights\n");
 
+            move((row/2)-4,(col/2)-6);
+            printw("5. Logout\n");
 
             move((row/2),(col/2)-6);
             printw("Enter your choice: ");
@@ -101,18 +106,42 @@ int admin_login()
             if(choice == 1)
             {
                 addFlight();
+                getch();
+                clear();
+                goto adm_ut;
             }
             else if(choice == 2)
             {
                 deleteFlight();
+                getch();
+                clear();
+                goto adm_ut;
             }
             else if(choice == 3)
             {
                 updateFlight();
+                getch();
+                clear();
+                goto adm_ut;
             }
             else if(choice == 4){
                 //loadFlight();
                 displayAllFlights();
+                getch();
+                clear();
+                goto adm_ut;
+            }
+            else if(choice == 5)
+            {
+                break;
+            }
+            else
+            {
+                move((row/2)-1,(col/2)-3);
+                printw("Invalid choice\n");
+                getch();
+                clear();
+                goto adm_ut;
             }
             break;
         }
