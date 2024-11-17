@@ -138,7 +138,11 @@ void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
             strcpy(airs[i].date, air.date);
             strcpy(airs[i].time, air.time);
             strcpy(airs[i].flightnum, air.flightnum);
+            airs[i].adult_price = air.adult_price;
+            airs[i].child_price = air.child_price;
+            airs[i].infant_price = air.infant_price;
             airs[i].seatsFree = air.seatsFree;
+
             if(strcmp(air.flightnum, airnum) == 0)//check if this is the record to be updated
             {
                 if(strcmp(mode, "add")==0)
@@ -235,6 +239,9 @@ void searchFlight(char* source,  char* destination,  char* date){
 		strcpy(totalflight[i].time, air.time);
 		strcpy(totalflight[i].flightnum, air.flightnum);
     	totalflight[i].seatsFree = air.seatsFree;
+        totalflight[i].adult_price = air.adult_price;
+        totalflight[i].child_price = air.child_price;
+        totalflight[i].infant_price = air.infant_price;
     	i++;
     }  
 
@@ -386,6 +393,9 @@ int bookFlight(char* flightnum)
 		strcpy(totalflight[i].date, air.date);
 		strcpy(totalflight[i].time, air.time);
 		strcpy(totalflight[i].flightnum, air.flightnum);
+        totalflight[i].adult_price = air.adult_price;
+        totalflight[i].child_price = air.child_price;
+        totalflight[i].infant_price = air.infant_price;
     	totalflight[i].seatsFree = air.seatsFree;
     	i++;
     }  
@@ -420,7 +430,7 @@ int bookFlight(char* flightnum)
                 FILE *fptr;
             int matrixflight[10][6], num; 
             char filename[100];
-            snprintf(filename, sizeof(filename), "/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/Seat Matrix/%s.txt", flightnum);
+            snprintf(filename, sizeof(filename), "./Seat Matrix/%s.txt", flightnum);
 
             fptr = fopen(filename, "r");
             for(int i=0; i<10; i++)
@@ -478,16 +488,16 @@ int bookFlight(char* flightnum)
 
                     if (bookers[j].age < 2){
                         strcpy(bookers[j].type, "Infant");
-                        bookers[j].price = INFANT_PRICE;
+                        bookers[j].price = totalflight[i].infant_price; ;
             
                     }
                     else if (bookers[j].age < 12){
                         strcpy(bookers[j].type, "Child");
-                        bookers[j].price = CHILD_PRICE;
+                        bookers[j].price =  totalflight[i].child_price;
                     }
                     else{
                         strcpy(bookers[j].type, "Adult");
-                        bookers[j].price = ADULT_PRICE;
+                        bookers[j].price =  totalflight[i].adult_price;
                     }
                 }
                 
@@ -528,13 +538,17 @@ int bookFlight(char* flightnum)
                 move((row/2),(col/2)-27);
                 printw("Flight Number: %s \n\n", flightnum);
                 move((row/2)+3,(col/2)-27);
-                printw("Name\tGender\tAge\tType\tMeal\tSeat No.\t\t Price:\n\n");
+                printw("Name\tGender\tAge\tType\tMeal\tSeat No.\t Price:\n\n");
+                double s=0.0;
                 for(int j=0; j<numTicket; j++)
                 {
                     move((row/2)+4+j,(col/2)-27);
-                    printw("%s\t%s\t%d\t%s\t%s\t%s\t\t%0.2f\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat,bookers[j].price);
+                    printw("%s\t%s\t%d\t%s\t%s\t%s\t%f\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat,bookers[j].price);
+                    s+=bookers[j].price;
 			    }
-                move((row/2)+numTicket+8,(col/2)-27);
+                move((row/2)+numTicket+6,(col/2)-27);
+                printw("Total Price: %0.2f\n",s);
+                move((row/2)+numTicket+10,(col/2)-27);
                 printw("Thank you for your booking! Bon Voyage!!\n");
 
                 addBooker("Booking_List.txt", bookers, numTicket, flightnum);

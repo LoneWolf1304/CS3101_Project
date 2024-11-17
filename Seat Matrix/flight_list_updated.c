@@ -11,6 +11,9 @@ typedef struct {
 	char destination [100];
 	char date[50]; 
     char time[50];
+    double adult_price;
+    double child_price;
+    double infant_price;
 } flight;
 
 
@@ -44,6 +47,9 @@ void fileWrite()
         strcpy(airs[i].time, air.time);
         strcpy(airs[i].flightnum, air.flightnum);
         airs[i].seatsFree = air.seatsFree;
+        airs[i].adult_price = air.adult_price;
+        airs[i].child_price = air.child_price;
+        airs[i].infant_price = air.infant_price;
         seat(air.flightnum, 60 );   
          i++;
     }

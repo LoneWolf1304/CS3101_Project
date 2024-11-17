@@ -106,17 +106,26 @@ void addFlight(){
 
     move(row/2-2, col/2-10);
     printw("Enter Departure Time:");
-    
     scanw("%s", newFlight.time);
 
-    
+    move(row/2-1, col/2-10);
+    printw("Enter Adult Price:");
+    scanw("%lf", &newFlight.adult_price);
+
+    move(row/2, col/2-10);
+    printw("Enter Child Price:");
+    scanw("%lf", &newFlight.child_price);
+
+    move(row/2+1, col/2-10);
+    printw("Enter Infant Price:");
+    scanw("%lf", &newFlight.infant_price);
 
     
     //totalflight[no_of_records] = newFlight;
     FILE *fptr;
     fptr = fopen("./Seat Matrix/AirList.txt", "a");
 
-    move(row/2-1, col/2-10);
+    move(row/2+2, col/2-10);
     printw("Flight added successfully.\n");
     fwrite(&newFlight, sizeof(flight), 1, fptr);
     fclose(fptr);
@@ -167,6 +176,9 @@ void updateFlight(){
         strcpy(airs[i].date, air.date);
         strcpy(airs[i].time, air.time);
         strcpy(airs[i].flightnum, air.flightnum);
+        airs[i].adult_price = air.adult_price;
+        airs[i].child_price = air.child_price;
+        airs[i].infant_price = air.infant_price;
         airs[i].seatsFree = air.seatsFree;
         i++;
     }
@@ -191,6 +203,9 @@ void updateFlight(){
             printw("Current Destination: %s\n", airs[i].destination);
             printw("Current Date: %s\n", airs[i].date);
             printw("Current Departure Time: %s\n", airs[i].time);
+            printw("Current Adult Price: %lf\n", airs[i].adult_price);
+            printw("Current Child Price: %lf\n", airs[i].child_price);
+            printw("Current Infant Price: %lf\n", airs[i].infant_price);
 
             //update details
 
@@ -206,6 +221,13 @@ void updateFlight(){
             scanw("%s", airs[i].date);
             printw("Enter new Departure Time:");
             scanw("%s", airs[i].time);
+            printw("Enter new Adult Price:");
+            scanw("%lf", &airs[i].adult_price);
+            printw("Enter new Child Price:");
+            scanw("%lf", &airs[i].child_price);
+            printw("Enter new Infant Price:");
+            scanw("%lf", &airs[i].infant_price);
+
 
             //fileAdminWrite();
             print_centre("Flight details modified successfully.\n");
@@ -278,6 +300,9 @@ void deleteFlight(){
         strcpy(airs[i].date, air.date);
         strcpy(airs[i].time, air.time);
         strcpy(airs[i].flightnum, air.flightnum);
+        airs[i].adult_price = air.adult_price;
+        airs[i].child_price = air.child_price;
+        airs[i].infant_price = air.infant_price;
         airs[i].seatsFree = air.seatsFree;
         i++;
     }
@@ -354,6 +379,12 @@ getmaxyx(stdscr, y, x);
         move(y/2-8+7*i, x/2-6);
         printw("Departure Time: %s\n", details.time);
         move(y/2-7+7*i, x/2-6);
+        printw("Adult Price: %lf\n", details.adult_price);
+        move(y/2-6+7*i, x/2-6);
+        printw("Child Price: %lf\n", details.child_price);
+        move(y/2-5+7*i, x/2-6);
+        printw("Infant Price: %lf\n", details.infant_price);
+        move(y/2-4+7*i, x/2-6);
         printw("\n");
         i++;
     }

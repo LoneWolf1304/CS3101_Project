@@ -9,6 +9,9 @@ typedef struct {
 	char destination [100];
 	char date[50]; 
     char time[50];
+	double adult_price;
+	double child_price;
+	double infant_price;
 	
 } flight;
 

@@ -145,7 +145,7 @@ int cancelBooking(char* tick){
 
     case 'y':
             char filename[100];
-            snprintf(filename, sizeof(filename), "/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/Seat Matrix/%s.txt", bookings[index].flightnum);
+            snprintf(filename, sizeof(filename), "./Seat Matrix/%s.txt", bookings[index].flightnum);
             update_seat_matrix(filename, bookings[index].flightnum, seats, sizeof(seats)/sizeof(seats[0]), "remove");
 
             for(int i=0; i<no_of_rec; i++)
