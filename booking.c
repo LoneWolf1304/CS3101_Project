@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<ncurses.h>
+#include<time.h>
 #include "airplane_list.h"
 
 #define MAX_FLIGHTS 50
@@ -285,6 +286,14 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
 
 
 }
+
+
+/*
+
+price: 
+
+
+*/
 typedef struct {
 	char name[50];
 	int age;
@@ -322,6 +331,7 @@ void addBooker(char *filename, BOOKER booker[], int numTicket, char *flightnum)
 int bookFlight(char* flightnum)
 {
 
+    srand(time(0));
     FILE *fptr;
     flight air, *airs;
     int no_of_rec = 0, i;
@@ -435,19 +445,19 @@ int bookFlight(char* flightnum)
 				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
                 for(int j=0; j<numTicket; j++)
                 {   
-                    move(y/2-12+j, x/2-5+j);
+                    move(y/2-12+5*j, x/2-5);
                     printw("Enter name of passenger %d: ",j+1);
                     scanw("%s",bookers[j].name);
-                    move(y/2-11+j, x/2-5+j);
+                    move(y/2-11+5*j, x/2-5);
                     printw("Enter age of passenger %d: ",j+1);
                     scanw("%d",&bookers[j].age);  
-                    move(y/2-10+j, x/2-5+j);
+                    move(y/2-10+5*j, x/2-5);
                     printw("Enter gender (M/F): ");
                     scanw("%s",bookers[j].gender);
-                    move(y/2-9+j, x/2-5+j);
+                    move(y/2-9+5*j, x/2-5);
                     printw("Enter meal option (Veg/Non-Veg/No): ");
                     scanw("%s",bookers[j].meal);
-                    move(y/2-8+j, x/2-5+j);
+                    move(y/2-8+5*j, x/2-5);
 
                     if (bookers[j].age < 2){
                         strcpy(bookers[j].type, "Infant");
@@ -462,17 +472,17 @@ int bookFlight(char* flightnum)
                 }
                 
 
-            move(y/2-7+numTicket, x/2-5+numTicket-1);
+            move(y/2-8+4*numTicket, x/2-5);
             printw("Enter seat numbers:\n");
-            move(y/2-7+numTicket+1, x/2-5+numTicket-1);
             char seats[numTicket][10];
             for(int i=0; i<numTicket; i++)
             {
+                move(y/2-7+4*numTicket+1+i, x/2-5);
                 getstr(bookers[i].seat);
                 strcpy(seats[i], bookers[i].seat);
                 strcpy(bookers[i].flightnum,flightnum);
             }
-            int pn = rand() % 900+100;
+            int pn = (rand() % 900)+100;
             char pnrs[20]; 
             snprintf(pnrs, sizeof(pnrs), "%d", pn);
             strcat(pnrs, flightnum);
@@ -484,9 +494,9 @@ int bookFlight(char* flightnum)
              clear(); 
                 int row, col;
                 getmaxyx(stdscr,row,col);
-                move((row/2)-5,(col/2)-19);
-                printw("Your Booking is Successful !\n\n");
-                move((row/2)-4,(col/2)-19);
+                move((row/2)-5,(col/2)-11);
+                printw("Your Booking is Successful !");
+                move((row/2)-3,(col/2)-15);
                 printw("Ticket Summary Generated\n\n ");
 
 				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
@@ -494,14 +504,14 @@ int bookFlight(char* flightnum)
                 printw("Ticket Number: %s \n\n", pnrs);
                 move((row/2),(col/2)-27);
                 printw("Flight Number: %s \n\n", flightnum);
-                move((row/2)+1,(col/2)-27);
+                move((row/2)+3,(col/2)-27);
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
-                    move((row/2)+4+j,(col/2)-27+j);
+                    move((row/2)+4+j,(col/2)-27);
                     printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat);
 			    }
-                move((row/2)+numTicket+4,(col/2)-27);
+                move((row/2)+numTicket+8,(col/2)-27);
                 printw("Thank you for your booking! Bon Voyage!!\n");
 
                 addBooker("Booking_List.txt", bookers, numTicket, flightnum);

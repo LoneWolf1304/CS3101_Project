@@ -181,10 +181,12 @@ int user_login()
         if(strcmp(user.name, name) == 0 && strcmp(user.pwd, pswd) == 0)
         {
             flag=1;
-            move((row/2)-1,(col/2)-4);
-            printw("Login successful\n");
+            move((row/2)-1,(col/2)-10);
+            printw("Login successful...Press any key to go to next page!\n");
+            getch();
             clear();
-
+            move((row/2)-8,(col/2)-4);
+            printw("Admin Utilities");
             move((row/2)-5,(col/2)-7);
             printw("1. Search Flights\n");
             

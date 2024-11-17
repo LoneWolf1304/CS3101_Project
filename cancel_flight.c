@@ -79,6 +79,9 @@
 
 
 int cancelBooking(char* tick){
+
+    int row,col;
+    getmaxyx(stdscr,row,col);
     FILE *fptr;
     BOOKER booking, *bookings;
     int no_of_rec = 0, i;
@@ -117,19 +120,24 @@ int cancelBooking(char* tick){
 
     char seats[no_of_rec][10];
     int index=-1;
-    printw("The following booking record is found: \n\nName\tGender\tAge\tType\tMeal\tSeat No.\n\n");
+    move(row/2-1, col/2-20);
+    printw("The following booking record is found:");
+    move(row/2, col/2-20);
+    printw("Name\tGender\tAge\tType\tMeal\tSeat No.");
     for(int i=0; i<no_of_rec; i++)
     {   
         if(strcmp(bookings[i].pnr, tick)==0)
         {
-            printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookings[i].name,bookings[i].gender,bookings[i].age,bookings[i].type, bookings[i].meal, bookings[i].seat);
+            move(row/2+1+i, col/2-20);
+            printw("%s\t%s\t%d\t%s\t%s\t%s",bookings[i].name,bookings[i].gender,bookings[i].age,bookings[i].type, bookings[i].meal, bookings[i].seat);
             strcpy(seats[i], bookings[i].seat);
             index=i;
         }
     }
+    move(row/2+2+no_of_rec, col/2-20);
     if(index!=-1)
     {
-    printw("\n\nDo you want to cancel this booking? (y/n): ");
+    printw("Do you want to cancel this booking? (y/n): ");
     char ch;
     scanw("%c", &ch);
     switch(ch)
@@ -147,14 +155,16 @@ int cancelBooking(char* tick){
                     fwrite(&bookings[i], sizeof(BOOKER), 1, fptr);
                 }
             }
-            printw("\n\nBooking Cancelled Successfully!!\n");
+            move(row/2+4+no_of_rec, col/2-20);
+            printw("Booking Cancelled Successfully!!\n");
             fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", bookings[index].flightnum, no_of_rec, "remove");
             
             break;
 
 
     case 'n': 
-            printw("\n\nBooking not cancelled\n");
+            move(row/2+4+no_of_rec, col/2-20);
+            printw("Booking not cancelled\n");
             break;
     }
     }
