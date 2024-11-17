@@ -98,15 +98,6 @@ int admin_login()
             printw("Enter your choice: ");
             scanw("%d", &choice);
 
-            if(empty_input){
-                move((row/2)+1,(col/2)-6);
-                printw("Choice cannot be empty\n");
-
-                move((row/2)+2,(col/2)-6);
-                printw("Press any key to go to main interface");
-                return 0;
-            }
-
             clear();
 
             if(choice == 1)
@@ -204,13 +195,12 @@ int user_login()
 
             move((row/2)-3,(col/2)-7);
             printw("3. Cancel Tickets\n");
-<<<<<<< Updated upstream
+
+            move((row/2)-2,(col/2)-7);
             printw("4. Bandhu -- the chat assistant\n");
-=======
             
-            move((row/2),(col/2)-7);
+            move((row/2)+1,(col/2)-7);
             printw("Enter your choice: ");
->>>>>>> Stashed changes
             scanw("%d", &choice);
             clear();
 
