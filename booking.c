@@ -289,11 +289,12 @@ typedef struct {
 	char name[50];
 	int age;
 	char gender[10];
-    char type[10];
+    char type[10];//passenger type(adult, child, infant)
     char meal[20];
     char pnr[20];
     char seat[20];
-    char flightnum[20]; //passenger type(adult, child, infant)
+    char flightnum[20];
+    double price; 
 } BOOKER;
 
 BOOKER bookers[MAX_BOOKINGS];
@@ -376,10 +377,13 @@ int bookFlight(char* flightnum)
             getmaxyx(stdscr,row,col);
             char header[300];
             snprintf(header, sizeof(header), "Flight %s from %s to %s on %s at %s", totalflight[i].flightnum, totalflight[i].source, totalflight[i].destination, totalflight[i].date, totalflight[i].time); 
+            move(row/2-2, col/2-3);
 			printw("The number of seats available: %d\n",totalflight[i].seatsFree);
+            move(row/2-1, col/2-3);
             printw("Enter number of seats to be booked: ");
 			scanw("%d",&numTicket);
-            printw("\nPress any key to continue book tickets!");
+            move(row/2, col/2-3);
+            printw("Press any key to continue book tickets!");
             getch();
             clear();
 
@@ -458,8 +462,9 @@ int bookFlight(char* flightnum)
                 }
                 
 
-            move(y/2-7+numTicket, x/2-5+numTicket);
+            move(y/2-7+numTicket, x/2-5+numTicket-1);
             printw("Enter seat numbers:\n");
+            move(y/2-7+numTicket+1, x/2-5+numTicket-1);
             char seats[numTicket][10];
             for(int i=0; i<numTicket; i++)
             {
@@ -479,18 +484,24 @@ int bookFlight(char* flightnum)
              clear(); 
                 int row, col;
                 getmaxyx(stdscr,row,col);
-                move((row/2)-8,(col/2)-20);
-
-                printw("Booking Successful !!\n\n");
+                move((row/2)-5,(col/2)-19);
+                printw("Your Booking is Successful !\n\n");
+                move((row/2)-4,(col/2)-19);
                 printw("Ticket Summary Generated\n\n ");
+
 				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
+                move((row/2)-1,(col/2)-27);
                 printw("Ticket Number: %s \n\n", pnrs);
+                move((row/2),(col/2)-27);
                 printw("Flight Number: %s \n\n", flightnum);
+                move((row/2)+1,(col/2)-27);
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");
                 for(int j=0; j<numTicket; j++)
                 {
+                    move((row/2)+4+j,(col/2)-27+j);
                     printw("%s\t%s\t%d\t%s\t%s\t%s\n",bookers[j].name,bookers[j].gender,bookers[j].age,bookers[j].type, bookers[j].meal, bookers[j].seat);
 			    }
+                move((row/2)+numTicket+4,(col/2)-27);
                 printw("Thank you for your booking! Bon Voyage!!\n");
 
                 addBooker("Booking_List.txt", bookers, numTicket, flightnum);
