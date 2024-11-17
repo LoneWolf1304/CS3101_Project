@@ -183,8 +183,9 @@ int user_login()
             printw("Login successful...Press any key to go to next page!\n");
             getch();
             clear();
+            utils:
             move((row/2)-8,(col/2)-4);
-            printw("Admin Utilities");
+            printw("User Utilities");
             move((row/2)-5,(col/2)-7);
             printw("1. Search Flights\n");
             
@@ -198,7 +199,8 @@ int user_login()
 
             move((row/2)-2,(col/2)-7);
             printw("4. Bandhu -- the chat assistant\n");
-            
+            move((row/2)-1,(col/2)-7);
+            printw("5. Logout\n");
             move((row/2)+1,(col/2)-7);
             printw("Enter your choice: ");
             scanw("%d", &choice);
@@ -263,6 +265,9 @@ int user_login()
                 //     return 0;
                 // }
                 searchFlight(source, dest, date);
+                getch();
+                clear();
+                goto utils;
             }
             else if(choice == 2)
             {
@@ -271,6 +276,9 @@ int user_login()
                 printw("Enter flight number: ");
                 getstr(flightnum);
                 bookFlight(flightnum);
+                getch();
+                clear();
+                goto utils;
             }
             else if(choice == 3)
             {
@@ -279,6 +287,9 @@ int user_login()
                 printw("Enter Ticket Number: ");
                 getstr(pnr);
                 cancelBooking(pnr);
+                getch();
+                clear();
+                goto utils;
             }
             else if(choice == 4)
             {
@@ -319,8 +330,14 @@ int user_login()
 
                     default: printw("Thanks!");
                 }
+                getch();
+                clear();
+                goto utils;
             }
-            break;
+            else if(choice == 5)
+            {
+                break;
+            }
         }
     }
     if(flag==0)
@@ -332,6 +349,7 @@ int user_login()
     move((row/2)-3,(col/2)-3);
     printw("Press any key to go to main!!");
     fclose(fptr);
+    ret:
      return 0;
     }
 }
