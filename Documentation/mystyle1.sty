@@ -1,0 +1,70 @@
+\ProvidesPackage{mystyle}
+\RequirePackage{enumitem}
+
+\RequirePackage{fontawesome}
+\usepackage[T1]{fontenc}
+\usepackage{tgbonum}
+
+
+\DeclareRobustCommand{\alegreyafont}{\fontfamily{Alegreya-LF}\selectfont} % defines alegreya
+\DeclareRobustCommand{\notofont}{\fontfamily{NotoSans-TLF}\selectfont}
+\DeclareRobustCommand{\merri}{\fontfamily{MerriwthrSans-OsF}\selectfont}
+
+\addtokomafont{title}{}
+    \setkomafont{subtitle}{\LARGE\sffamily\bfseries}
+    \setkomafont{author}{\Large}
+    \setkomafont{date}{}
+
+
+
+
+
+\RequirePackage{amsmath, amsfonts, amssymb, amsthm, physics, dsfont}
+\RequirePackage{graphicx, float, svg, subcaption}
+\RequirePackage{tikz}
+\RequirePackage{braket}
+\RequirePackage{relsize}
+\RequirePackage{multirow, multicol, bm,subcaption,booktabs}
+\RequirePackage[usenames, svgnames, dvipsnames]{xcolor}
+\RequirePackage[most]{tcolorbox}
+\definecolor{mycolor}{rgb}{0.122, 0.435, 0.698}
+\definecolor{mycolor1}{rgb}{1 ,2.5 ,0 } 
+\def\maincolor{DarkTurquoise} %width=6cm
+\newtcolorbox{mybox}[2][]{colback=mycolor!10!white,
+	colframe=black,fonttitle=\bfseries,
+	colbacktitle=red!85!black,enhanced,
+	attach boxed title to top center={yshift=-2.7mm},
+	title=#2,#1}
+
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\comtr}[2]{\left[ #1, #2 \right]}
+\newcommand{\brac}[1]{\left( #1 \right)}
+\newcommand\HUGE{\@setfontsize\Huge{30}{30}}
+
+
+\newcommand{\SA}{\mathcal A}
+\newcommand{\SH}{\mathcal H}
+\newcommand{\SN}{\mathcal N}
+\newcommand{\SC}{\mathcal C}
+\newcommand{\SR}{\mathcal R}
+\newcommand{\SB}{\mathcal B}
+\newcommand{\Ss}{\mathcal S}
+
+
+
+
+
+\newtcbox{\blubox}{on line,
+	colframe=black,colback= white,
+	boxrule=1.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+\newtcbox{\yelbox}{on line,
+	colframe=black,colback= white,
+	boxrule=1.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+
+\newtcbox{\limbox}{on line,
+	colframe=black,colback=lime!20!white,
+	boxrule=1.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt}
+
+
+\DeclareCaptionStyle{modify_cap}[justification=centering,indention=0pt]{font={small},labelfont={sf,bf},width=0.9\textwidth}
+\captionsetup[figure]{style=modify_cap}
