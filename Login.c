@@ -6,6 +6,13 @@
 #include "admin.c"
 #include "Bandhu_chatbot.c"
 
+
+int empty_input(char *str)  //check if entry in empty string
+{
+    return str==NULL || strlen(str)==0;
+}
+
+
 int admin_login()
 {
     ADMIN admin;
@@ -17,14 +24,45 @@ int admin_login()
     move((row/2)-5,(col/2)-3);
     printw("Enter your name: ");
     getstr(admin.name);
+    if(empty_input(admin.name))
+    {   
+        move((row/2)-1,(col/2)-3);
+        printw("Name cannot be empty !\n");
+
+        move((row/2),(col/2)-3);
+        printw("Press any key to go to main interface");
+        //getch();
+        return 0;
+    }
+
+
     move((row/2)-4,(col/2)-3);
     printw("Enter Ronway ID: ");
     getstr(admin.id);
+    if(empty_input(admin.id))
+    {   
+        move((row/2)-1,(col/2)-3);
+        printw("ID cannot be empty\n");
+
+        move((row/2),(col/2)-3);
+        printw("Press any key to go to main interface");
+        return 0;
+    }
+
     move((row/2)-3,(col/2)-3);
     printw("Enter your password: ");
     noecho();
     getstr(admin.pwd);
     echo();
+    if(empty_input(admin.pwd))
+    {   
+        move((row/2)-1,(col/2)-3);
+        printw("Password cannot be empty\n");
+
+        move((row/2),(col/2)-3);
+        printw("Press any key to go to main interface");
+        return 0;
+    }
 
     fptr = fopen("Admins.txt", "r");
     if(fptr == NULL)
@@ -36,15 +74,40 @@ int admin_login()
     while(fread(&admin, sizeof(ADMIN), 1, fptr))
     {
         if(strcmp(admin.name, admin.name) == 0 && strcmp(admin.id, admin.id) == 0 && strcmp(admin.pwd, admin.pwd) == 0)
-        {
+        {   
+            
+
             move((row/2)-1,(col/2)-3);
             printw("Login successful\n");
             clear();
+
+            move((row/2)-8,(col/2)-6);
             printw("1. Add Flight\n");
+
+            move((row/2)-7,(col/2)-6);
             printw("2. Cancel Flight\n");
+
+            move((row/2)-6,(col/2)-6);
             printw("3. Change Flight Data\n");
+
+            move((row/2)-5,(col/2)-6);
             printw("4. View Flights\n");
+
+
+            move((row/2),(col/2)-6);
+            printw("Enter your choice: ");
             scanw("%d", &choice);
+
+            if(empty_input){
+                move((row/2)+1,(col/2)-6);
+                printw("Choice cannot be empty\n");
+
+                move((row/2)+2,(col/2)-6);
+                printw("Press any key to go to main interface");
+                return 0;
+            }
+
+            clear();
 
             if(choice == 1)
             {
@@ -87,10 +150,30 @@ int user_login()
 
     printw("Enter your name: ");
     getstr(name);
+    if(empty_input(name))
+    {   
+        move((row/2)-1,(col/2)-3);
+        printw("Name cannot be empty\n");
+
+        move((row/2)+1,(col/2)-3);
+        printw("Press any key to go to main interface");
+        return 0;
+    }
+
+
     move((row/2)-4,(col/2)-3);
     printw("Enter your password: ");
     noecho();
     getstr(pswd);
+    if(empty_input(name))
+    {   
+        move((row/2)-1,(col/2)-3);
+        printw("Wrong Password\n");
+
+        move((row/2)+1,(col/2)-3);
+        printw("Press any key to go to main interface");
+        return 0;
+    }
     echo();
 
     fptr = fopen("Users.txt", "r");
@@ -107,33 +190,94 @@ int user_login()
         if(strcmp(user.name, name) == 0 && strcmp(user.pwd, pswd) == 0)
         {
             flag=1;
-            move((row/2)-1,(col/2)-3);
+            move((row/2)-1,(col/2)-4);
             printw("Login successful\n");
             clear();
+
+            move((row/2)-5,(col/2)-7);
             printw("1. Search Flights\n");
+            
+
+            move((row/2)-4,(col/2)-7);
             printw("2. Book Tickets\n");
+           
+
+            move((row/2)-3,(col/2)-7);
             printw("3. Cancel Tickets\n");
+<<<<<<< Updated upstream
             printw("4. Bandhu -- the chat assistant\n");
+=======
+            
+            move((row/2),(col/2)-7);
+            printw("Enter your choice: ");
+>>>>>>> Stashed changes
             scanw("%d", &choice);
+            clear();
 
             //loadFlight();
 
             if(choice == 1)
             {
                 char source[100], dest[100], date[100], time[50];
+
+                move((row/2)-6,(col/2)-3);
                 printw("Enter source: ");
                 getstr(source);
+                if(empty_input(source))
+                {   
+                    move((row/2)-3,(col/2)-3);
+                    printw("Source cannot be empty\n");
+
+                    move((row/2)-2,(col/2)-3);
+                    printw("Press any key to go to main interface");
+                    return 0;
+                }
+
+                move((row/2)-5,(col/2)-3);
                 printw("Enter destination: ");
                 getstr(dest);
+                if(empty_input(dest))
+                {   
+                    move((row/2)-3,(col/2)-3);
+                    printw("Destination cannot be empty\n");
+
+                    move((row/2)-2,(col/2)-3);
+                    printw("Press any key to go to main interface");
+                    return 0;
+                }
+
+                move((row/2)-4,(col/2)-3);
                 printw("Enter date: ");
                 getstr(date);
+                if(empty_input(date))
+                {   
+                    move((row/2)-3,(col/2)-3);
+                    printw("Date cannot be empty\n");
+
+                    move((row/2)-2,(col/2)-3);
+                    printw("Press any key to go to main interface");
+                    return 0;
+                }
+
+                move((row/2)-3,(col/2)-3);
                 printw("Enter time:");
                 getstr(time);
+                if(empty_input(time))
+                {   
+                    move((row/2)-1,(col/2)-3);
+                    printw("Time cannot be empty\n");
+
+                    move((row/2),(col/2)-3);
+                    printw("Press any key to go to main interface");
+                    return 0;
+                }
+
                 searchFlight(source, dest, date, time);
             }
             else if(choice == 2)
             {
                 char flightnum[50];
+                move((row/2)-5,(col/2)-3);
                 printw("Enter flight number: ");
                 getstr(flightnum);
                 bookFlight(flightnum);
@@ -141,6 +285,7 @@ int user_login()
             else if(choice == 3)
             {
                 char pnr[50];
+                move((row/2)-5,(col/2)-3);
                 printw("Enter Ticket Number: ");
                 getstr(pnr);
                 cancelBooking(pnr);
@@ -182,11 +327,11 @@ int user_login()
     }
     if(flag==0)
     {
-    move((row/2)-1,(col/2)-3);
+    move((row/2)-5,(col/2)-3);
     printw("Incorrect Username/Password....." );
-    move((row/2),(col/2)-3);
+    move((row/2)-4,(col/2)-3);
     printw("Login failed, try again.");
-    move((row/2)+3,(col/2)-3);
+    move((row/2)-3,(col/2)-3);
     printw("Press any key to go to main!!");
     fclose(fptr);
      return 0;

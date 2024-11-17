@@ -8,6 +8,17 @@
 #define MAX_SEATS 60
 #define MAX_BOOKINGS 50
 
+void print_centre(const char *str){
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    int x=(col-strlen(str))/2;
+    int y=row/2-2;
+    move(y,x);
+    printw("%s", str);
+
+
+}
+
 
 
 typedef struct {
@@ -56,7 +67,8 @@ void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size
 
     fptr = fopen(filename, "w");
     if (fptr == NULL) {
-        printf("Error opening file %s\n", filename);
+        printw("Error opening file %s\n", filename);
+        getch();
         return;
     }
 
@@ -90,7 +102,7 @@ void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
 
     if(fptr == NULL)
     {
-        printf("Error opening file!\n");
+        printw("Error opening file!\n");
         exit(1);
     }
 
@@ -182,7 +194,7 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
     flight air;
 	flight *totalflight;
     int no_of_rec = 0, i;
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
+    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r");
 
     if(fptr == NULL)
     {
@@ -218,6 +230,12 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
     }  
 
     fclose(fptr);
+
+    char header[300];
+    printw(header, sizeof(header), "Available flight from %s to %s on %s:", source, destination, date);
+    printw(header);
+
+
 	int size = no_of_rec;
 	  //function to search flights
 	int flag=0;
@@ -227,8 +245,11 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
 		   strcmp(totalflight[i].destination,destination) == 0 &&
 		   strcmp(totalflight[i].date,date) == 0 && strcmp(totalflight[i].time,tim) == 0){
 
+        char flight_details[300];
+        snprintf(flight_details, sizeof(flight_details), "Flight Number: %s, Seats Available: %d", totalflight[i].flightnum, totalflight[i].seatsFree);
+
 		//printw("Flight Available !\n");
-		printw("Flight Number: %s, Seats Available: %d\n",totalflight[i].flightnum,totalflight[i].seatsFree);
+		printw(flight_details);
 		flag++;
 		}
 	}
@@ -305,7 +326,7 @@ int bookFlight(char* flightnum)
     int no_of_rec = 0, i;
 	flight *totalflight;
 
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
+    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r+");
 
     if(fptr == NULL)
     {
@@ -351,6 +372,10 @@ int bookFlight(char* flightnum)
     {
 		if(strcmp(totalflight[i].flightnum, flightnum)==0)
         {   
+            int row,col;
+            getmaxyx(stdscr,row,col);
+            char header[300];
+            snprintf(header, sizeof(header), "Flight %s from %s to %s on %s at %s", totalflight[i].flightnum, totalflight[i].source, totalflight[i].destination, totalflight[i].date, totalflight[i].time); 
 			printw("The number of seats available: %d\n",totalflight[i].seatsFree);
             printw("\nPress any key to continue book tickets!");
             getch();
@@ -364,7 +389,7 @@ int bookFlight(char* flightnum)
                 FILE *fptr;
             int matrixflight[10][6], num; 
             char filename[100];
-            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnum);
+            snprintf(filename, sizeof(filename), "/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", flightnum);
 
             fptr = fopen(filename, "r");
             for(int i=0; i<10; i++)
@@ -377,8 +402,8 @@ int bookFlight(char* flightnum)
             }
             fclose(fptr);
             //Printing flight matrix
-            printw("\n\t  Front\n\n");
-            printw("\tA B C   D E F\n\n\n");
+            print_centre("\n\t  Front\n\n");
+            print_centre("\tA B C   D E F\n\n\n");
             
             for(int i=0; i<10; i++)
             {
@@ -408,7 +433,11 @@ int bookFlight(char* flightnum)
 
 				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
                 for(int j=0; j<numTicket; j++)
-                {
+                {   
+                    int x,y;
+                    getmaxyx(stdscr, y, x);
+                    move(y/2-2, x/2-10);
+
                     printw("Enter name of passenger %d: ",j+1);
                     scanw("%s",bookers[j].name);
                     printw("Enter age of passenger %d: ",j+1);
@@ -450,9 +479,13 @@ int bookFlight(char* flightnum)
             }
             update_seat_matrix(filename, flightnum, seats, sizeof(seats)/sizeof(seats[0]), "add");
              clear(); 
+                int row, col;
+                getmaxyx(stdscr,row,col);
+                move((row/2)-8,(col/2)-20);
+
                 printw("Booking Successful !!\n\n");
                 printw("Ticket Summary Generated\n\n ");
-				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
+				fileReadWrite("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", totalflight[i].flightnum, numTicket, "add");
                 printw("Ticket Number: %s \n\n", pnrs);
                 printw("Flight Number: %s \n\n", flightnum);
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");

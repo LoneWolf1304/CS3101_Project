@@ -77,18 +77,36 @@ void addFlight(){
 
     flight newFlight;
 
+    int row, col;
+    getmaxyx(stdscr, row, col);
 
+    move(row/2-8, col/2-10);
+    printw("Enter the following details:\n");
+    //printw("----------------------------\n");
+    
+    move(row/2-7, col/2-10);
     printw("Enter Flight Number:");
     scanw("%s", newFlight.flightnum);
+
+    move(row/2-6, col/2-10);
     printw("Enter number of seats:");
     scanw("%d", &newFlight.seatsFree);
+
+    move(row/2-5, col/2-10);
     printw("Enter Source:");
     scanw("%s", newFlight.source);
+
+    move(row/2-4, col/2-10);
     printw("Enter Destination:");
     scanw("%s", newFlight.destination);
+
+    move(row/2-3, col/2-10);
     printw("Enter Date (DD-MM-YYYY):");
     scanw("%s", newFlight.date);
+
+    move(row/2-2, col/2-10);
     printw("Enter Departure Time:");
+    
     scanw("%s", newFlight.time);
 
     
@@ -96,7 +114,9 @@ void addFlight(){
     
     //totalflight[no_of_records] = newFlight;
     FILE *fptr;
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "a");
+    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "a");
+
+    move(row/2-1, col/2-10);
     printw("Flight added successfully.\n");
     fwrite(&newFlight, sizeof(flight), 1, fptr);
     no_of_records++;
@@ -111,12 +131,17 @@ void updateFlight(){
 
     char flightnum[50];
     int flag=0;
+    
+    int row, col;
+    getmaxyx(stdscr, row, col);
+
+    move(row/2-8, col/2-10);
     printw("Enter the flight number of the flight you want to modify:");
     scanw("%s", flightnum);
 
 
 
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
+    FILE *fptr =fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r+");
     if(fptr == NULL)
     {
         printw("Error opening file!\n");
@@ -150,6 +175,9 @@ void updateFlight(){
     for(i = 0; i < no_of_records; i++){
         if(strcmp(airs[i].flightnum, flightnum) == 0)
         {
+            int x, y;
+            getmaxyx(stdscr, y, x);
+            move(y/2-2, x/2-10);
 
             flag = 1;
             printw("Flight found.\n");
@@ -178,13 +206,13 @@ void updateFlight(){
             scanw("%s", airs[i].time);
 
             //fileAdminWrite();
-            printw("Flight details modified successfully.\n");
+            print_centre("Flight details modified successfully.\n");
             return;
         }
     }
 
     if(flag == 0){
-        printw("Flight not found.\n");
+        print_centre("Flight not found.\n");
     }
 }
 
@@ -224,10 +252,10 @@ void deleteFlight(){
     //     }
     // }
 
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
+    FILE *fptr =fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r+");
     if(fptr == NULL)
     {
-        printw("Error opening file!\n");
+        print_centre("Error opening file!\n");
         exit(1);
     }
 
@@ -253,10 +281,10 @@ void deleteFlight(){
     }
     fclose(fptr);
 
-    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "w");
+    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "w");
     if(fptr == NULL)
     {
-        printf("Error opening file!\n");
+        print_centre("Error opening file!\n");
         free(airs);
         exit(1);
     }
@@ -272,9 +300,9 @@ void deleteFlight(){
     }
     
     fclose(fptr);
-    printw("Flight successfully deleted!\n");
+    print_centre("Flight successfully deleted!\n");
     if(flag == 0){
-        printw("Flight not found.\n");
+        print_centre("Flight not found.\n");
     }
 }
 
@@ -284,10 +312,10 @@ void deleteFlight(){
 void displayAllFlights(){
 
     flight details;
-    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
+    FILE *fptr =fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r");
     if(fptr == NULL)
     {
-        printw("Error opening file!\n");
+        print_centre("Error opening file!\n");
         exit(1);
     }
 
@@ -307,6 +335,11 @@ void displayAllFlights(){
     int i=0;
     while(fread(&details, sizeof(flight), 1, fptr))
     {
+        int x,y;
+        getmaxyx(stdscr, y, x);
+        move(y/2-2, x/2-10);
+
+
         printw("Flight Number: %s\n", details.flightnum);
         printw("Number of seats: %d\n", details.seatsFree);
         printw("Source: %s\n", details.source);
