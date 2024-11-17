@@ -5,10 +5,10 @@
 void seat(char flightnumb[], int seats) 
 {
     FILE *fptr;
-    char filename[20];  // Buffer to store the filename
+    char filename[100];  // Buffer to store the filename
 
     // Create a new filename by appending ".txt" to flightnumb without modifying it directly
-    snprintf(filename, sizeof(filename), "%s.txt", flightnumb);
+    snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnumb);
 
     // Open the file with the generated filename
     fptr = fopen(filename, "w");

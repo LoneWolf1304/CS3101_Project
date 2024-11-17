@@ -194,7 +194,7 @@ void searchFlight(char* source,  char* destination,  char* date, char* tim){
     flight air;
 	flight *totalflight;
     int no_of_rec = 0, i;
-    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
 
     if(fptr == NULL)
     {
@@ -326,7 +326,7 @@ int bookFlight(char* flightnum)
     int no_of_rec = 0, i;
 	flight *totalflight;
 
-    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r+");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
 
     if(fptr == NULL)
     {
@@ -377,11 +377,11 @@ int bookFlight(char* flightnum)
             char header[300];
             snprintf(header, sizeof(header), "Flight %s from %s to %s on %s at %s", totalflight[i].flightnum, totalflight[i].source, totalflight[i].destination, totalflight[i].date, totalflight[i].time); 
 			printw("The number of seats available: %d\n",totalflight[i].seatsFree);
+            printw("Enter number of seats to be booked: ");
+			scanw("%d",&numTicket);
             printw("\nPress any key to continue book tickets!");
             getch();
             clear();
-			printw("Enter number of seats to be booked: ");
-			scanw("%d",&numTicket);
 
 			if(numTicket >0 && numTicket <= totalflight[i].seatsFree)
             {
@@ -389,7 +389,7 @@ int bookFlight(char* flightnum)
                 FILE *fptr;
             int matrixflight[10][6], num; 
             char filename[100];
-            snprintf(filename, sizeof(filename), "/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", flightnum);
+            snprintf(filename, sizeof(filename), "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/%s.txt", flightnum);
 
             fptr = fopen(filename, "r");
             for(int i=0; i<10; i++)
@@ -402,8 +402,8 @@ int bookFlight(char* flightnum)
             }
             fclose(fptr);
             //Printing flight matrix
-            print_centre("\n\t  Front\n\n");
-            print_centre("\tA B C   D E F\n\n\n");
+            printw("Seats available for the flight \n\n\n\t  Front\n\n");
+            printw("\tA B C   D E F\n\n\n");
             
             for(int i=0; i<10; i++)
             {
@@ -426,26 +426,24 @@ int bookFlight(char* flightnum)
             printw("\n\t Rear\n");
 
 
-
-
-
-
-
+                int x,y;
+                getmaxyx(stdscr, y, x);
 				//totalflight[i].seatsFree=totalflight[i].seatsFree-numTicket;
                 for(int j=0; j<numTicket; j++)
                 {   
-                    int x,y;
-                    getmaxyx(stdscr, y, x);
-                    move(y/2-2, x/2-10);
-
+                    move(y/2-12+j, x/2-5+j);
                     printw("Enter name of passenger %d: ",j+1);
                     scanw("%s",bookers[j].name);
+                    move(y/2-11+j, x/2-5+j);
                     printw("Enter age of passenger %d: ",j+1);
-                    scanw("%d",&bookers[j].age);   
+                    scanw("%d",&bookers[j].age);  
+                    move(y/2-10+j, x/2-5+j);
                     printw("Enter gender (M/F): ");
                     scanw("%s",bookers[j].gender);
+                    move(y/2-9+j, x/2-5+j);
                     printw("Enter meal option (Veg/Non-Veg/No): ");
                     scanw("%s",bookers[j].meal);
+                    move(y/2-8+j, x/2-5+j);
 
                     if (bookers[j].age < 2){
                         strcpy(bookers[j].type, "Infant");
@@ -460,7 +458,7 @@ int bookFlight(char* flightnum)
                 }
                 
 
-            
+            move(y/2-7+numTicket, x/2-5+numTicket);
             printw("Enter seat numbers:\n");
             char seats[numTicket][10];
             for(int i=0; i<numTicket; i++)
@@ -485,7 +483,7 @@ int bookFlight(char* flightnum)
 
                 printw("Booking Successful !!\n\n");
                 printw("Ticket Summary Generated\n\n ");
-				fileReadWrite("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", totalflight[i].flightnum, numTicket, "add");
+				fileReadWrite("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
                 printw("Ticket Number: %s \n\n", pnrs);
                 printw("Flight Number: %s \n\n", flightnum);
                 printw("Name\tGender\tAge\tType\tMeal\tSeat No.\n\n");

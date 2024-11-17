@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<ncurses.h>
-
+#include "/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/seat_matrix.c"
 
 
 //add additional flight as an admin
@@ -114,13 +114,15 @@ void addFlight(){
     
     //totalflight[no_of_records] = newFlight;
     FILE *fptr;
-    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "a");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "a");
 
     move(row/2-1, col/2-10);
     printw("Flight added successfully.\n");
     fwrite(&newFlight, sizeof(flight), 1, fptr);
+    fclose(fptr);
+    seat(newFlight.flightnum, 60);
     no_of_records++;
-    fclose(fptr);    //loadFlight();
+        //loadFlight();
 }
 
 
@@ -141,7 +143,7 @@ void updateFlight(){
 
 
 
-    FILE *fptr =fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r+");
+    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
     if(fptr == NULL)
     {
         printw("Error opening file!\n");
@@ -252,7 +254,7 @@ void deleteFlight(){
     //     }
     // }
 
-    FILE *fptr =fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r+");
+    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r+");
     if(fptr == NULL)
     {
         print_centre("Error opening file!\n");
@@ -281,7 +283,7 @@ void deleteFlight(){
     }
     fclose(fptr);
 
-    fptr = fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "w");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "w");
     if(fptr == NULL)
     {
         print_centre("Error opening file!\n");
@@ -309,10 +311,11 @@ void deleteFlight(){
 
 //function to display all flights in the database
 
-void displayAllFlights(){
+void displayAllFlights()
+{
 
     flight details;
-    FILE *fptr =fopen("/mnt/d/ronit/IISER-K/5 SEM/CS3101/CS3101 project/CS3101_Project/AirList.txt", "r");
+    FILE *fptr =fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
     if(fptr == NULL)
     {
         print_centre("Error opening file!\n");
@@ -331,21 +334,26 @@ void displayAllFlights(){
     //     printw("No flights available.\n");
     //     return;
     // }
-
+int x,y;
+getmaxyx(stdscr, y, x);
     int i=0;
+    move(y/2-12, x/2-6);
+    printw("All the available flights are: ");
     while(fread(&details, sizeof(flight), 1, fptr))
     {
-        int x,y;
-        getmaxyx(stdscr, y, x);
-        move(y/2-2, x/2-10);
-
-
+        move(y/2-13+7*i, x/2-6);
         printw("Flight Number: %s\n", details.flightnum);
+        move(y/2-12+7*i, x/2-6);
         printw("Number of seats: %d\n", details.seatsFree);
+        move(y/2-11+7*i, x/2-6);
         printw("Source: %s\n", details.source);
+        move(y/2-10+7*i, x/2-6);
         printw("Destination: %s\n", details.destination);
+        move(y/2-9+7*i, x/2-6);
         printw("Date: %s\n", details.date);
+        move(y/2-8+7*i, x/2-6);
         printw("Departure Time: %s\n", details.time);
+        move(y/2-7+7*i, x/2-6);
         printw("\n");
         i++;
     }

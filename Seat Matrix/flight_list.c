@@ -31,7 +31,7 @@ void fileWrite(int no_of_records)
     FILE *fptr;
     int i;
 
-    fptr = fopen("AirList.txt", "w");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "w");
 
     if(fptr == NULL)
     {
