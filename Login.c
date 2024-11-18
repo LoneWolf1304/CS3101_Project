@@ -240,50 +240,50 @@ int user_login()
 
             if(choice == 1)
             {
-                char source[100], dest[100], date[100], time[50];
-                move(row/2-8, col/2-1);
-                printw("Flight Search");
-                move((row/2)-6,(col/2)-3);
-                printw("Enter source: ");
-                getstr(source);
-                if(empty_input(source))
-                {   
-                    move((row/2)-3,(col/2)-3);
-                    printw("Source cannot be empty\n");
+                // char source[100], dest[100], date[100], time[50];
+                // move(row/2-8, col/2-1);
+                // printw("Flight Search");
+                // move((row/2)-6,(col/2)-3);
+                // printw("Enter source: ");
+                // getstr(source);
+                // if(empty_input(source))
+                // {   
+                //     move((row/2)-3,(col/2)-3);
+                //     printw("Source cannot be empty\n");
 
-                    move((row/2)-2,(col/2)-3);
-                    printw("Press any key to go to main interface");
-                    return 0;
-                }
+                //     move((row/2)-2,(col/2)-3);
+                //     printw("Press any key to go to main interface");
+                //     return 0;
+                // }
 
-                move((row/2)-5,(col/2)-3);
-                printw("Enter destination: ");
-                getstr(dest);
-                if(empty_input(dest))
-                {   
-                    move((row/2)-3,(col/2)-3);
-                    printw("Destination cannot be empty\n");
+                // move((row/2)-5,(col/2)-3);
+                // printw("Enter destination: ");
+                // getstr(dest);
+                // if(empty_input(dest))
+                // {   
+                //     move((row/2)-3,(col/2)-3);
+                //     printw("Destination cannot be empty\n");
 
-                    move((row/2)-2,(col/2)-3);
-                    printw("Press any key to go to main interface");
-                    return 0;
-                }
+                //     move((row/2)-2,(col/2)-3);
+                //     printw("Press any key to go to main interface");
+                //     return 0;
+                // }
 
-                move((row/2)-4,(col/2)-3);
-                printw("Enter date: ");
-                getstr(date);
-                if(empty_input(date))
-                {   
-                    move((row/2)-3,(col/2)-3);
-                    printw("Date cannot be empty\n");
+                // move((row/2)-4,(col/2)-3);
+                // printw("Enter date: ");
+                // getstr(date);
+                // if(empty_input(date))
+                // {   
+                //     move((row/2)-3,(col/2)-3);
+                //     printw("Date cannot be empty\n");
 
-                    move((row/2)-2,(col/2)-3);
-                    printw("Press any key to go to main interface");
-                    return 0;
-                }
+                //     move((row/2)-2,(col/2)-3);
+                //     printw("Press any key to go to main interface");
+                //     return 0;
+                // }
 
                 
-                searchFlight(source, dest, date);
+                searchFlight();
                 getch();
                 clear();
                 goto utils;

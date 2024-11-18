@@ -20,7 +20,7 @@ void fileWrite_new()
 {
     FILE *fptr;
 
-    fptr = fopen("AirList.txt", "r");
+    fptr = fopen("/home/shaggy1304/IISER/Lab_Files/CS/CS3101_Project/Seat Matrix/AirList.txt", "r");
 
     if(fptr == NULL)
     {
