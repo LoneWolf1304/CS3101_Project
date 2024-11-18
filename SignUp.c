@@ -148,8 +148,6 @@ int sign_up()
     getstr(user.name);
     move((row/2)-2,(col/2)-4);
     printw("Enter your password: ");
-    // scanf("%s", user.pwd);
-    //fgets(user.pwd, 50, stdin);
     noecho();
     getstr(user.pwd);
     move((row/2)-1,(col/2)-4);

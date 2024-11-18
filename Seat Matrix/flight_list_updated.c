@@ -3,21 +3,20 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include "seat_matrix.c"
-typedef struct {
-	char flightnum[50];
-	int seatsFree;
-	char source[100];
-	char destination [100];
-	char date[50]; 
-    char time[50];
-    double adult_price;
-    double child_price;
-    double infant_price;
-} flight;
+// typedef struct {
+// 	char flightnum[50];
+// 	int seatsFree;
+// 	char source[100];
+// 	char destination [100];
+// 	char date[50]; 
+//     char time[50];
+//     double adult_price;
+//     double child_price;
+//     double infant_price;
+// } flight;
 
 
-void fileWrite()
+void fileWrite_new()
 {
     FILE *fptr;
 
@@ -50,7 +49,7 @@ void fileWrite()
         airs[i].adult_price = air.adult_price;
         airs[i].child_price = air.child_price;
         airs[i].infant_price = air.infant_price;
-        seat(air.flightnum, 60 );   
+        //seat(air.flightnum, 60 );   
          i++;
     }
     fclose(fptr);
@@ -65,8 +64,8 @@ void fileWrite()
 
 
 }
-void main()
-{
-    fileWrite();
-    //seat("AI202", 60);
-}
+// void main()
+// {
+//     fileWrite();
+//     //seat("AI202", 60);
+// }

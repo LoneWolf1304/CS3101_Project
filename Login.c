@@ -225,12 +225,13 @@ int user_login()
 
             move((row/2)-3,(col/2)-7);
             printw("3. Cancel Tickets\n");
-
             move((row/2)-2,(col/2)-7);
-            printw("4. Bandhu -- the chat assistant\n");
+            printw("4. View Records\n");
             move((row/2)-1,(col/2)-7);
-            printw("5. Logout\n");
-            move((row/2)+1,(col/2)-7);
+            printw("5. Bandhu -- the chat assistant\n");
+            move((row/2),(col/2)-7);
+            printw("6. Logout\n");
+            move((row/2)+2,(col/2)-7);
             printw("Enter your choice: ");
             scanw("%d", &choice);
             clear();
@@ -281,18 +282,7 @@ int user_login()
                     return 0;
                 }
 
-                // move((row/2)-3,(col/2)-3);
-                // printw("Enter time:");
-                // getstr(time);
-                // if(empty_input(time))
-                // {   
-                //     move((row/2)-1,(col/2)-3);
-                //     printw("Time cannot be empty\n");
-
-                //     move((row/2),(col/2)-3);
-                //     printw("Press any key to go to main interface");
-                //     return 0;
-                // }
+                
                 searchFlight(source, dest, date);
                 getch();
                 clear();
@@ -304,7 +294,7 @@ int user_login()
                 move((row/2)-5,(col/2)-3);
                 printw("Enter flight number: ");
                 getstr(flightnum);
-                bookFlight(flightnum);
+                bookFlight(flightnum, name);
                 getch();
                 clear();
                 goto utils;
@@ -322,19 +312,51 @@ int user_login()
             }
             else if(choice == 4)
             {
+
+                FILE *fptr;
+                    BOOKER booking;
+                    fptr = fopen("Booking_List.txt", "r+");
+                    if(fptr == NULL)
+                    {
+                        printw("Error opening file!\n");
+                        exit(1);
+                    }
+                    int i=0;
+                    move(row/2-1, col/2-30);
+                    printw("The following booking record is found for user:");
+                    move(row/2, col/2-30);
+                    printw("Name\tGender\tAge\tType\tMeal\tSeat No.\tFlight No.\tTicket No.");
+                    while(fread(&booking, sizeof(BOOKER), 1, fptr)) 
+                    {
+                        if(strcmp(booking.username, name)== 0)
+                        {
+                            move(row/2+1+2*i, col/2-30);
+                            printw("%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s",booking.name,booking.gender,booking.age,booking.type, booking.meal, booking.seat, booking.flightnum, booking.pnr);
+                        }
+                        i++;
+                    }
+                    fclose(fptr);
+                getch();
+                clear();
+                goto utils;
+                
+            }
+            else if(choice == 5)
+            {
                 clear();
                 int counter=1;
-                printw(">>Hello %s! I am Bandhu, your flight assistant. How can I help you today?\n", name);
+                printw(">> Hello %s! I am Bandhu, your flight assistant. How can I help you today?\n", name);
                 chatting:
                     if(counter>1)
-                    printw(">>Is there anything else that I can help you with?\n");
+                    printw(">> Is there anything else that I can help you with?\n");
+                    greet:
                     int f = chat(name);
                     counter+=1;
                 switch(f)
                 {
                     case 1: 
                     char pnr[50];
-                    printw(">>Please enter the ticket number that you want to cancel:\n>>");
+                    printw(">> Cancellation of the tickets requires payment of cancellation charges. Please enter the ticket number that you want to cancel:\n>>");
                     getstr(pnr);
                     cancelBooking(pnr);
                     clear();
@@ -343,27 +365,92 @@ int user_login()
 
                     case 0: 
                     char flightnum[50];
-                    printw(">>Please enter the flight number which you want to book. I am redirecting you to the booking page!\n>>");
+                    printw(">> Please enter the flight number which you want to book. I am redirecting you to the booking page!\n>>");
                     getstr(flightnum);
                     clear();
-                    bookFlight(flightnum);
+                    bookFlight(flightnum, name);
                     printw("\t\t\tYour ticket has been booked! Press any key to return to chat\n"); 
                     getch();
                     clear();
                     goto chatting;
                     break;
 
-                    case 3:
+                    case 2: 
+                    FILE *fptr;
+                    BOOKER booking;
+                    fptr = fopen("Booking_List.txt", "r+");
+                    if(fptr == NULL)
+                    {
+                        printw("Error opening file!\n");
+                        exit(1);
+                    }
+                    int i=0;
+                    move(row/2-1, col/2-20);
+                    printw("The following booking record is found for user:");
+
+                    move(row/2, col/2-30);
+                    printw("Name\tGender\tAge\tType\tMeal\tSeat No.\tFlight No.\tTicket No.");
+                    while(fread(&booking, sizeof(BOOKER), 1, fptr)) 
+                    {
+                        if(strcmp(booking.username, name)== 0)
+                        {
+                            move(row/2+1+2*i, col/2-30);
+                            printw("%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s",booking.name,booking.gender,booking.age,booking.type, booking.meal, booking.seat, booking.flightnum, booking.pnr);
+                        }
+                        i++;
+                    }
+                    fclose(fptr);
+
+                    getch();
+                    clear();
+                    goto chatting;
                     break;
 
 
-                    default: printw("Thanks!");
+
+                    case 3:printw(">> The maximum baggage limit is 15 kg per person. Extra charges are applicable for baggage beyond 15 kg.\n>> ");
+                    goto chatting;
+                    break;
+
+
+
+
+                    case 4: printw(">> We offer online payment methods like credit card, debit card, net banking, and UPI. The prices for each flight varies. You have to pay after your seat is booked.\n");
+                    goto chatting;
+                    break;
+
+
+
+
+                    case 5: printw(">> We offer a variety of meals on board. You can choose from vegetarian and non-vegetarian meals during your booking.\n");
+                    goto chatting;
+                    break;
+
+
+
+
+                    case 6: printw(">> You can select your seat during the booking process. The availability of seats depends on the flight you choose.\n");
+                    goto chatting;
+                    break;
+
+
+
+
+                    case 7: printw(">> On cancellation, we refund 40 percent of the total bill amount. Refunds are processed within 7-10 working days. The refund amount will be credited to your account.\n");
+                    goto chatting;
+                    break;
+
+                    case 8: printw(">> Hello! How can I help you today?\n");
+                    goto greet;
+                    break;
+
+                    default: printw(">> Thanks! Have a nice day!! Bye...");
                 }
                 getch();
                 clear();
                 goto utils;
             }
-            else if(choice == 5)
+            else if(choice == 6)
             {
                 break;
             }

@@ -3,7 +3,7 @@
 #include<string.h>
 #include<ncurses.h>
 #include "./Seat Matrix/seat_matrix.c"
-
+#include "./Seat Matrix/flight_list_updated.c"
 
 //add additional flight as an admin
 flight *totalflight=NULL;
@@ -130,6 +130,7 @@ void addFlight(){
     fwrite(&newFlight, sizeof(flight), 1, fptr);
     fclose(fptr);
     seat(newFlight.flightnum, 60);
+    fileWrite_new();
     no_of_records++;
         //loadFlight();
 }

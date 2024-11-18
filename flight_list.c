@@ -1,5 +1,3 @@
-//Reading/writing structure-wise (fixed-length record)
-
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>

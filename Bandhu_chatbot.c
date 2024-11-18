@@ -4,20 +4,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
 
-const char *flightBookingKeywords[] = {"book", "make"};
-const char *status_keys[] = {"status", "flight availability", "timing", "schedule", "arrival", "departure", "arrival time", "departure time", "flight delay", "delayed", "on time"};
-const char *cancellationKeywords[] = {"cancel", "cancellation", "cancelling", "refund", "refundable", "non-refundable"};
-const char *baggageKeywords[] = {"baggage", "baggage limit"};
-const char *paymentKeywords[] = {"payment", "methods", "charges"};
-const char *mealKeywords[] = {"meal", "veg", "non-veg"};
-
-char *lowering(char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        str[i] = tolower(str[i]);
-    }
-    return str;
-}
-
 int indexOf(const char *str[], const char *substr, int size) {
     for (int i = 0; i < size; i++) {
         if (str[i] != NULL && substr != NULL && strcmp(str[i], substr) == 0) {
@@ -27,12 +13,17 @@ int indexOf(const char *str[], const char *substr, int size) {
     return -1;
 }
 
-const char *keyword_match(const char *key1[], char *key2[], int key1_size, int key2_size) {
-    for (int i = 0; i < key2_size; i++) {
-        for (int j = 0; j < key1_size; j++) {
-            if (strcmp(key1[j], key2[i]) == 0) {
-                return key1[0]; // Return the matched keyword
-            }
+char *lowering(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = tolower(str[i]);
+    }
+    return str;
+}
+
+const char *keyword_match(const char *keywords[], char *response, int size) {
+    for (int i = 0; i < size; i++) {
+        if (strstr(response, keywords[i]) != NULL) {
+            return keywords[i]; // Return the matched keyword
         }
     }
     return NULL; // No match found
@@ -40,62 +31,47 @@ const char *keyword_match(const char *key1[], char *key2[], int key1_size, int k
 
 int chat(char *name) {
     char response[200];
-    char *ptr;
-    char *keywords[200];
-    int i = 0;
-
-    printw(">>", name);
+    printw(">> ", name);
     getstr(response);
 
-    int len = strlen(response);
-    if (len > 0 && response[len - 1] == '\n') {
-        response[len - 1] = '\0'; // Remove newline
-    }
+    // Ensure the response doesn't overflow
+    response[sizeof(response) - 1] = '\0';
 
-    // Tokenize and store lowercase tokens in keywords
-    ptr = strtok(response, " ");
-    while (ptr != NULL) {
-        keywords[i] = strdup(lowering(ptr)); // Duplicate and store token
-        ptr = strtok(NULL, " ");
-        i++;
-    }
+    // Convert response to lowercase
+    lowering(response);
+
+    // Keyword arrays
+    const char *greetingKeys[]={"hi", "hello", "good morning"};
+    const char *flightBookingKeywords[] = {"book", "make", "make a booking", "book a flight"};
+    const char *status_keys[] = {"status", "flight availability", "timing", "schedule", "arrival", "departure", "arrival time", "departure time", "flight delay", "delayed", "on time"};
+    const char *cancellationKeywords[] = {"cancel", "cancellation", "cancelling", "refund", "refundable", "non-refundable", "cancel my booking", "cancel my flight"};
+    const char *baggageKeywords[] = {"baggage", "baggage limit"};
+    const char *paymentKeywords[] = {"payment methods", "payment methods available"};
+    const char *mealKeywords[] = {"meal", "veg", "non-veg", "meal options"};
+    const char *seatsKeywords[] = {"seats", "seat selection", "seat availability"};
+    const char *refundKeywords[] = { "refund", "refund policy", "refunded", "refundable","get a refund"};
 
     // Match keywords
-    const char *result = keyword_match(flightBookingKeywords, keywords, sizeof(flightBookingKeywords) / sizeof(flightBookingKeywords[0]), i);
-    const char *result1 = keyword_match(cancellationKeywords, keywords, sizeof(cancellationKeywords) / sizeof(cancellationKeywords[0]), i);
-    const char *result2 = keyword_match(status_keys, keywords, sizeof(status_keys) / sizeof(status_keys[0]), i);
-    const char *result3 = keyword_match(baggageKeywords, keywords, sizeof(baggageKeywords) / sizeof(baggageKeywords[0]), i);
-    const char *result5 = keyword_match(paymentKeywords, keywords, sizeof(paymentKeywords) / sizeof(paymentKeywords[0]), i);
-    const char *result6 = keyword_match(mealKeywords, keywords, sizeof(mealKeywords) / sizeof(mealKeywords[0]), i);
+    const char *result = keyword_match(flightBookingKeywords, response, sizeof(flightBookingKeywords) / sizeof(flightBookingKeywords[0]));
+    const char *result1 = keyword_match(cancellationKeywords, response, sizeof(cancellationKeywords) / sizeof(cancellationKeywords[0]));
+    const char *result2 = keyword_match(status_keys, response, sizeof(status_keys) / sizeof(status_keys[0]));
+    const char *result3 = keyword_match(baggageKeywords, response, sizeof(baggageKeywords) / sizeof(baggageKeywords[0]));
+    const char *result4 = keyword_match(paymentKeywords, response, sizeof(paymentKeywords) / sizeof(paymentKeywords[0]));
+    const char *result5 = keyword_match(mealKeywords, response, sizeof(mealKeywords) / sizeof(mealKeywords[0]));
+    const char *result6 = keyword_match(seatsKeywords, response, sizeof(seatsKeywords) / sizeof(seatsKeywords[0]));
+    const char *result7 = keyword_match(refundKeywords, response, sizeof(refundKeywords) / sizeof(refundKeywords[0]));
+    const char *result8 = keyword_match(greetingKeys, response, sizeof(greetingKeys) / sizeof(greetingKeys[0]));
 
     // Determine category
-    const char *categories[] = {"book", "cancel", "status", "baggage", "payment", "meal"};
-    const char *matches[] = {result, result1, result2, result3, result5, result6};
+    const char *categories[] = {"book", "cancel", "status", "baggage", "payment", "meal", "seats", "refund", "hi"};
+    const char *matches[] = {result, result1, result2, result3, result4, result5, result6, result7, result8};
 
-    for (int j = 0; j < 6; j++) {
+    for (int j = 0; j < 9; j++) {
         if (matches[j] != NULL) {
-            // printf("Matched category: %s\n", matches[j]);
-            // Cleanup allocated memory
-            for (int k = 0; k < i; k++) {
-                free(keywords[k]);
-            }
-            return indexOf(categories, matches[j], 6);
+            return indexOf(categories, matches[j], 9);
         }
-    }
-
-    // Cleanup allocated memory
-    for (int k = 0; k < i; k++) {
-        free(keywords[k]);
     }
 
     return -1; // No match
 }
-
-// int main() {
-//     initscr();
-//     printw("\nResult: %d", chat("Rahul"));
-//     getch();
-//     endwin();
-//     return 0;
-// }
 

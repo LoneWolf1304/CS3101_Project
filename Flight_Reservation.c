@@ -35,7 +35,6 @@ int main()
         display_name();
         int row, col, choice;
         getmaxyx(stdscr,row,col);
-        //printw("%d, %d", row, col);
         move((row/2)-8,(col/2)-20);
 
         printw("Where the sky's not the limit, but just the view!\n");
@@ -52,12 +51,10 @@ int main()
         printw("Enter your choice: ");
         scanw("%d", &choice);
         clear(); 
-        //printw("%d", choice);
         switch(choice)
         {
             case 1:  
                     sign_up();
-                    //fileRead("Users.txt");
                     move((row/2)+5,(col/2)-5);
                     printw("Press any key to go to main interface");
                     getch();
