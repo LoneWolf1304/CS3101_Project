@@ -8,7 +8,7 @@
 
 
 
-
+//function to cancel booking
 int cancelBooking(char* tick){
 
     int row,col;
@@ -54,6 +54,7 @@ int cancelBooking(char* tick){
     printw("The following booking record is found:");
     move(row/2, col/2-20);
     printw("Name\tGender\tAge\tType\tMeal\tSeat No.");
+    int cancelled=0;
     for(int i=0; i<no_of_rec; i++)
     {   
         if(strcmp(bookings[i].pnr, tick)==0)
@@ -62,6 +63,7 @@ int cancelBooking(char* tick){
             printw("%s\t%s\t%d\t%s\t%s\t%s",bookings[i].name,bookings[i].gender,bookings[i].age,bookings[i].type, bookings[i].meal, bookings[i].seat);
             strcpy(seats[i], bookings[i].seat);
             index=i;
+            cancelled+=1;
         }
     }
     move(row/2+2+no_of_rec, col/2-20);
@@ -88,9 +90,8 @@ int cancelBooking(char* tick){
             fclose(fptr);
             move(row/2+4+no_of_rec, col/2-20);
             printw("Booking Cancelled Successfully!!\n");
-            fileReadWrite("./Seat Matrix/AirList.txt", bookings[index].flightnum, no_of_rec, "remove");
+            fileReadWrite("./Seat Matrix/AirList.txt", bookings[index].flightnum, cancelled, "remove");
             break;
-
 
     case 'n': 
             move(row/2+4+no_of_rec, col/2-20);

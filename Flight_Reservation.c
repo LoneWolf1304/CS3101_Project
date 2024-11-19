@@ -5,9 +5,11 @@
 #include "Login.c"
 
 
-
 int display_name()
 {
+    start_color();
+    init_pair(2, COLOR_BLUE, COLOR_BLACK);
+    attron(COLOR_PAIR(2));
     move(0, 13);
     printw("  _____                                                            _          _   _                      \n");
     move(1, 13);
@@ -24,10 +26,11 @@ int display_name()
     printw("                                               __/ |                                                      \n");
     move(7, 13);
     printw("                                              |___/                                                       \n");
+    attroff(COLOR_PAIR(2));
     return 0;
 }
 
-
+//Main function which starts the interface.......
 int main()
 {   initscr();
     while(1)

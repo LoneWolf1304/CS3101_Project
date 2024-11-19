@@ -4,19 +4,19 @@
 
 
 
-
+//Structure to define new user
 typedef struct user{
 char name[50];
 char pwd[50];
 }USER;
-
+//Structure to define new admin
 typedef struct admin{
 char name[50];
 char pwd[50];
 char id[50];
 }ADMIN;
 
-
+//file writing for user
 void fileWrite(char *filename, USER *user)
 {
     FILE *fptr;
@@ -30,7 +30,7 @@ void fileWrite(char *filename, USER *user)
     fclose(fptr);
 }
 
-
+//file writing for admin
 void fileWrite1(char *filename, ADMIN *admin)
 {
     FILE *fptr;
@@ -44,6 +44,7 @@ void fileWrite1(char *filename, ADMIN *admin)
     fclose(fptr);
 }
 
+//file reading for user
 void fileRead(char *filename)
 {
     FILE *fptr;
@@ -62,6 +63,7 @@ void fileRead(char *filename)
     fclose(fptr);
 }
 
+//file reading for admin
 void fileRead1(char *filename)
 {
     FILE *fptr;
@@ -84,7 +86,7 @@ void fileRead1(char *filename)
 
 
 
-
+//function for sign-up of user
 int sign_up()
 {
     USER user;
@@ -104,6 +106,7 @@ int sign_up()
 
     clear();
     move((row/2)-7,(col/2)-4);
+    //asks new user for details
     printw("New User Details");
     
     if (strcmp(acc_typ, "Admin") == 0)

@@ -5,14 +5,16 @@
 #include<time.h>
 #include "airplane_list.h"
 
-#define ADULT_PRICE 5000
+#define ADULT_PRICE 5000   //defining adult children and infant prices
 #define CHILD_PRICE 3000
 #define INFANT_PRICE 0
 
+//checking for empty input
 int empty_input(const char *str) {
-    return str == NULL || str[0] == '\0';
+    return str == NULL || str[0] == '\0';   
 }
 
+//defining the maximum number of flights, seats and bookings
 #define MAX_FLIGHTS 50
 #define MAX_SEATS 60
 #define MAX_BOOKINGS 50
@@ -28,8 +30,9 @@ void print_centre(const char *str){
 
 }
 
+//
 
-
+//booking structure
 typedef struct {
 
 	char name[100];
@@ -38,6 +41,7 @@ typedef struct {
 } booking;
    
 
+//funtion to upodate seat matrix
 void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size, char* mode)
 {
     FILE *fptr;
@@ -97,7 +101,7 @@ void update_seat_matrix(char* filename, char* airnum, char seats[][10], int size
 
 
 
-
+// function to read and write to file
 void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
 
 {
@@ -170,7 +174,7 @@ void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
 
 
 
-
+//function to search flights
 int searchFlight()
 {
     FILE *fptr;
@@ -178,7 +182,7 @@ int searchFlight()
     flight air;
 	flight *totalflight;
     int no_of_rec = 0, i;
-    fptr = fopen("./Seat Matrix/AirList.txt", "r");
+    fptr = fopen("./Seat Matrix/AirList.txt", "r");  
 
     if(fptr == NULL)
     {
@@ -216,7 +220,11 @@ int searchFlight()
 
 
 
-
+    /*
+    The following code is used to print a calendar and highlight the dates on which flights are available. This is done by
+    creating a 2D matrix of size 5x7, where each element represents a day in a particular month. The matrix is then printed on the screen 
+    in a calendar format. The dates on which flights are available are highlighted in green.
+    */
 
     char month_arr[250][50];
     char date_arr[250][50];
@@ -244,15 +252,14 @@ int searchFlight()
 
 
 
-
-int matrixflight[5][7], num;
+    //creating a matrix which stores the dates
+    int matrixflight[5][7], num;
     char filename[100];
     int start_row = 2, start_column = 5; // Starting position for the first month
     int months_per_row = 4;             // Number of months per row
     int row_spacing = 8;                // Spacing between calendar rows
     int column_spacing = 32;            // Spacing between calendar columns
 
-    // Initialize ncurses
     initscr();
     clear();
     
@@ -287,13 +294,18 @@ int matrixflight[5][7], num;
         }
         fclose(fptr);
         start_color();
-        // Print the month header
+        // Prints the month in a format
         mvprintw(current_row, current_column, "    %s", Month[month]);
         init_pair(2, COLOR_GREEN, COLOR_BLACK);
         // Print the calendar matrix
         for (int i = 0; i < 5; i++) {
             move(current_row + 1 + i, current_column);
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 7; j++) 
+            {
+
+                /*
+                code for checking if the date is available in the flight list. If it is available, the date is highlighted in green.
+                */
                 if (matrixflight[i][j] != 0 && matrixflight[i][j] >= 10)
                 {
                     int index=-1;
@@ -339,11 +351,11 @@ int matrixflight[5][7], num;
                     }
                 }
                 else
-                    printw("    "); // Empty days
+                    printw("    "); 
+                    // Empty days
             }
         }
     }
-
 
 
 
@@ -351,7 +363,7 @@ int matrixflight[5][7], num;
     int row,col;
     getmaxyx(stdscr,row,col);
                 move(row-5, col/2-1);
-                printw("Flight Search");
+                printw("Flight Search");  //search for flights
                 move((row)-3,(col/2)-3);
                 printw("Enter source: ");
                 getstr(src);
@@ -375,7 +387,7 @@ int matrixflight[5][7], num;
 
                     move((row)-2,(col/2)-3);
                     printw("Press any key to go to main interface");
-                    //return 0;
+                    
                 }
 
                 move((row)-1,(col/2)-3);
@@ -389,28 +401,28 @@ int matrixflight[5][7], num;
 
                     move((row)-2,(col/2)-3);
                     printw("Press any key to go to main interface");
-                    //return 0;
+                    
                 }
 
-char destination[50];
-strcpy(destination, dest);
-char source[50];
-strcpy(source, src);
-char date[50];
-strcpy(date, dat);	
+    char destination[50];
+    strcpy(destination, dest);
+    char source[50];
+    strcpy(source, src);
+    char date[50];
+    strcpy(date, dat);	
     
-clear();
+    clear();
 
 
 
 	int size = no_of_rec;
-	  //function to search flights
+	//function to search flights
 	int flag=0;
     int x,y;
     getmaxyx(stdscr, y, x);
     move(y/2-1, x/2-25);
 	printw("Available flight from %s to %s on %s:\n",source, destination,date);
-	for (int i =0; i < size; i++)
+	for (int i =0; i < size; i++)    //print available flights
     {
         if(strcmp(totalflight[i].source,source) == 0 &&
 		   strcmp(totalflight[i].destination,destination) == 0 &&
@@ -444,7 +456,7 @@ clear();
 
 
 
-
+//defining the booker structure
 
 typedef struct {
     char username[50];
@@ -461,7 +473,7 @@ typedef struct {
 
 BOOKER bookers[MAX_BOOKINGS];
 
-
+//definng the function to add a hooker 
 void addBooker(char *filename, BOOKER booker[], int numTicket, char *flightnum)
 {
     FILE *fptr;
@@ -480,7 +492,7 @@ void addBooker(char *filename, BOOKER booker[], int numTicket, char *flightnum)
 
 
 
-
+// function to book flights
 int bookFlight(char* flightnum, char* usr)
 {
 
@@ -490,7 +502,7 @@ int bookFlight(char* flightnum, char* usr)
     int no_of_rec = 0, i;
 	flight *totalflight;
 
-    fptr = fopen("./Seat Matrix/AirList.txt", "r+");
+    fptr = fopen("./Seat Matrix/AirList.txt", "r+");   //opening the file in read and write mode
 
     if(fptr == NULL)
     {
@@ -526,9 +538,7 @@ int bookFlight(char* flightnum, char* usr)
     }  
 
     fclose(fptr);
-
 	int size = no_of_rec;
-
 	int numTicket;
 
 	for(int i=0; i< size;i++)
@@ -567,7 +577,9 @@ int bookFlight(char* flightnum, char* usr)
                 }
             }
             fclose(fptr);
-            //Printing flight matrix
+            /*The following code prints a matrix which represents the seating arrangement in a particular flight.
+            The empty seats are marked zero and the filled seats are marked 1. A user can choose any empty seat to book.
+            */
             printw("Seats available for the flight \n\n\n\t  Front\n\n");
             printw("\tA B C   D E F\n\n\n");
             
@@ -595,7 +607,7 @@ int bookFlight(char* flightnum, char* usr)
                 int x,y;
                 getmaxyx(stdscr, y, x);
 
-                for(int j=0; j<numTicket; j++)
+                for(int j=0; j<numTicket; j++)  //details for each passenger
                 {   
                     strcpy(bookers[j].username, usr);
                     move(y/2-12+5*j, x/2-5);
@@ -650,6 +662,7 @@ int bookFlight(char* flightnum, char* usr)
                 
                 strcpy(bookers[i].pnr, pnrs);
             }
+            //updating the seat matrix where the matrix element is set to 1 
             update_seat_matrix(filename, flightnum, seats, sizeof(seats)/sizeof(seats[0]), "add");
              clear(); 
                 int row, col;
@@ -659,7 +672,7 @@ int bookFlight(char* flightnum, char* usr)
                 move((row/2)-3,(col/2)-15);
                 printw("Ticket Summary Generated\n\n ");
 
-				fileReadWrite("./Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");
+				fileReadWrite("./Seat Matrix/AirList.txt", totalflight[i].flightnum, numTicket, "add");  //displaying the ticket summary
                 move((row/2)-1,(col/2)-27);
                 printw("Ticket Number: %s \n\n", pnrs);
                 move((row/2),(col/2)-27);
@@ -705,7 +718,7 @@ int bookFlight(char* flightnum, char* usr)
 
     // Get the number of rows in the ASCII art
     int numRows = sizeof(art) / sizeof(art[0]);
-
+    clear();
     for (i =0 ; i < numRows; i++) {
 		move((rowc/2)-10+i, colc/2);
         printw("%s", art[i]);

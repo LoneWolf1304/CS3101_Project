@@ -10,7 +10,7 @@
 
 
 
-
+//function for admin login
 int admin_login()
 {
     ADMIN admin;
@@ -46,7 +46,7 @@ int admin_login()
         printw("Press any key to go to main interface");
         return 0;
     }
-
+    //asking for password
     move((row/2)-3,(col/2)-3);
     printw("Enter your password: ");
     noecho();
@@ -68,7 +68,7 @@ int admin_login()
     printw("Error opening file!\n");
     exit(1);
     }
-
+    //reading file for admin details
     while(fread(&admin, sizeof(ADMIN), 1, fptr))
     {
         if(strcmp(admin.name, admin.name) == 0 && strcmp(admin.id, admin.id) == 0 && strcmp(admin.pwd, admin.pwd) == 0)
@@ -156,6 +156,8 @@ int admin_login()
     return 0;
 
 }
+
+//function for user login
 int user_login()
 {
     USER user;
@@ -203,8 +205,7 @@ int user_login()
     int flag=0;
     while(fread(&user, sizeof(USER), 1, fptr))
     {
-        // printw("%s %s", user.name, user.pwd);
-        // getch();
+        
         if(strcmp(user.name, name) == 0 && strcmp(user.pwd, pswd) == 0)
         {
             flag=1;
@@ -236,7 +237,7 @@ int user_login()
             scanw("%d", &choice);
             clear();
 
-            //loadFlight();
+            
 
             if(choice == 1)
             {
@@ -284,7 +285,7 @@ int user_login()
             }
             else if(choice == 4)
             {
-
+                
                 FILE *fptr;
                     BOOKER booking;
                     fptr = fopen("Booking_List.txt", "r+");
@@ -315,6 +316,7 @@ int user_login()
             }
             else if(choice == 5)
             {
+                //printing chatbot ASCII logo....for aesthetics!
                 clear();
                 mvprintw(0, 5, "  _____                                                            ____                        _   _             ");
                 mvprintw(1, 5, " |_   _|                                                          |  _ \\                      | | | |            ");
@@ -324,7 +326,7 @@ int user_login()
                 mvprintw(5, 5, " |_____|    \\__,_| |_| |_| |_|    \\__, |  \\___/   \\__,_| |_|      |____/   \\__,_| |_| |_|  \\__,_| |_| |_|  \\__,_|");
                 mvprintw(6, 5, "                                   __/ |                                                                         ");
                 mvprintw(7, 5, "                                  |___/                                                                          ");
-
+    
 
 
 
@@ -333,7 +335,7 @@ int user_login()
 
 
 
-
+                //initiation of chatbot
                 int counter=1;
                 printw(">> Hello %s! I am Bandhu, your flight assistant. How can I help you today?\n", name);
                 chatting:
@@ -351,6 +353,7 @@ int user_login()
                     printw(">> Is there anything else that I can help you with?\n");
                     }
                     greet:
+                    //getting response from chat function
                     int f = chat(name);
                     counter+=1;
                 switch(f)
@@ -410,6 +413,8 @@ int user_login()
 
 
                     case 3:printw(">> The maximum baggage limit is 15 kg per person. Extra charges are applicable for baggage beyond 15 kg.\n>> ");
+                    clear();
+                    clear();
                     goto chatting;
                     break;
 
@@ -417,6 +422,7 @@ int user_login()
 
 
                     case 4: printw(">> We offer online payment methods like credit card, debit card, net banking, and UPI. The prices for each flight varies. You have to pay after your seat is booked.\n");
+                    clear();
                     goto chatting;
                     break;
 
@@ -424,6 +430,7 @@ int user_login()
 
 
                     case 5: printw(">> We offer a variety of meals on board. You can choose from vegetarian and non-vegetarian meals during your booking.\n");
+                    clear();
                     goto chatting;
                     break;
 
@@ -431,6 +438,7 @@ int user_login()
 
 
                     case 6: printw(">> You can select your seat during the booking process. The availability of seats depends on the flight you choose.\n");
+                    clear();
                     goto chatting;
                     break;
 
@@ -438,6 +446,7 @@ int user_login()
 
 
                     case 7: printw(">> On cancellation, we refund 40 percent of the total bill amount. Refunds are processed within 7-10 working days. The refund amount will be credited to your account.\n");
+                    clear();
                     goto chatting;
                     break;
 

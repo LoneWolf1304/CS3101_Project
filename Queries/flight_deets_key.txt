@@ -1,5 +1,0 @@
-status
-id
-source
-destination
-number
