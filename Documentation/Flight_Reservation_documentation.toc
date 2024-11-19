@@ -1,9 +1,0 @@
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Building and Dependencies}{1}{section.2}%
-\contentsline {section}{\numberline {3}Main Structure}{2}{section.3}%
-\contentsline {section}{\numberline {4}Documentation}{2}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Functions for User Utilities}{2}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Functions for Admin Utilities}{3}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Functions for Bandhu--the chatbot}{3}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Contributions}{4}{section.5}%
-\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

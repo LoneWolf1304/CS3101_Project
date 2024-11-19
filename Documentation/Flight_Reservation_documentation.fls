@@ -465,6 +465,13 @@ INPUT /usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmtt12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmr12.tfm
+INPUT ./airplane.jpg
+INPUT ./airplane.jpg
+INPUT ./airplane.jpg
+INPUT ./airplane.jpg
+INPUT ./airplane.jpg
+INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT /usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT ./Flight_Reservation_documentation.toc
 INPUT ./Flight_Reservation_documentation.toc
 INPUT Flight_Reservation_documentation.toc
@@ -478,8 +485,6 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm
 OUTPUT Flight_Reservation_documentation.toc
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmri10.tfm
-INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
-INPUT /usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT ./main structure.png
 INPUT ./main structure.png
 INPUT ./main structure.png
