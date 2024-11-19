@@ -170,57 +170,11 @@ void fileReadWrite(char* filename, char* airnum, int seats, char *mode)
 
 
 
-void print_matrix(char *mon[], char *dat[], int month, int start_row, int start_column)
-{
-    FILE *fptr;
-    int matrixflight[5][7], num; 
-    char filename[100];
-    snprintf(filename, sizeof(filename), "./Calendar/%d.txt", month);
 
-    fptr = fopen(filename, "r");
-    move(start_row, start_column);
-    printw("Month %d:", (month+1));
-    for(int i=0; i<5; i++)
-    {
-        for(int j=0; j<7; j++)
-        {
-            fscanf(fptr, "%d", &num);
-            matrixflight[i][j] = num;
-        }
-    }
-    move(start_row+1, start_column);
-    for(int i=0; i<5; i++)
-    {
-        for(int j=0; j<7; j++)
-        {
-            if(matrixflight[i][j]!=0 && matrixflight[i][j]>=10)
-            printw("%d  ", matrixflight[i][j]);
-            else if(matrixflight[i][j]!=0 && matrixflight[i][j]<10)
-            printw("0%d  ", matrixflight[i][j]);
-        }
-        move(start_row+1+i, start_column);
-        printw("\n");
-    }
-    fclose(fptr);
-}
-
-
-
-
-
-
-
-
-
-void searchFlight()
+int searchFlight()
 {
     FILE *fptr;
     clear();
-
-
-
-
-
     flight air;
 	flight *totalflight;
     int no_of_rec = 0, i;
@@ -264,20 +218,16 @@ void searchFlight()
 
 
 
-    char month_arr[50][50];
-    char date_arr[50][50];
+    char month_arr[250][50];
+    char date_arr[250][50];
     for(int i=0; i< no_of_rec;i++)
     {
         char date1[50];
         strcpy(date1, totalflight[i].date);
-        // month_arr[i] = (char *)malloc(10 * sizeof(char)); // Adjust size as needed
-        // date_arr[i] = (char *)malloc(10 * sizeof(char));
         char* token = strtok(date1, "-");
         int a=0;
-        //printw("%s dates \n", token);
         while (token != NULL) 
         {
-        //printf(" % s\n", token);
         if(a==1) 
         {
         strcpy(month_arr[i], token);
@@ -289,8 +239,6 @@ void searchFlight()
         token = strtok(NULL, "-");
         a++;
         }
-        // printw("%d %s ", i, month_arr[i]);
-        // printw("%d %s\n", i, date_arr[i]);
     }
 
 
@@ -319,17 +267,6 @@ int matrixflight[5][7], num;
         int col = month % months_per_row;                // Column index (0 to 3)
         int current_row = start_row + row * row_spacing; // Adjust row spacing
         int current_column = start_column + col * column_spacing; // Adjust column spacing
-
-
-        // int index=0;
-        // for(int j2=0; j2<sizeof(date_arr)/sizeof(date_arr[0]);j2++)
-        // {
-        //     int dat = (atoi(date_arr[j2])==(month+1)); 
-        //     if(atoi(month_arr[j2])==(month+1))
-        //     {
-        //         index=j2;
-        //     }
-        // }
 
 
 
@@ -363,7 +300,6 @@ int matrixflight[5][7], num;
                     for(int j2=0; j2<sizeof(date_arr)/sizeof(date_arr[0]);j2++)
                     {
                         int dat = (atoi(date_arr[j2])); 
-                        //printw(" DATES %s DATES \n", date_arr[j2]);
                         if(matrixflight[i][j] == dat)
                          index=j2;
                         
@@ -383,12 +319,10 @@ int matrixflight[5][7], num;
                 }
                 else if (matrixflight[i][j] != 0 && matrixflight[i][j] < 10)
                 {
-                    //printw("0%d  ", matrixflight[i][j]);
                     int index=-1;
                     for(int j2=0; j2<sizeof(date_arr)/sizeof(date_arr[0]);j2++)
                     {
                         int dat = (atoi(date_arr[j2])); 
-                        //printw(" DATES %s DATES \n", date_arr[j2]);
                         if(matrixflight[i][j] == dat)
                          index=j2;
                         
@@ -416,9 +350,9 @@ int matrixflight[5][7], num;
 	char src[100], dest[100], dat[100], time[50];
     int row,col;
     getmaxyx(stdscr,row,col);
-                move(row-8, col/2-1);
+                move(row-5, col/2-1);
                 printw("Flight Search");
-                move((row)-6,(col/2)-3);
+                move((row)-3,(col/2)-3);
                 printw("Enter source: ");
                 getstr(src);
                 if(empty_input(src))
@@ -431,10 +365,9 @@ int matrixflight[5][7], num;
                     //return 0;
                 }
 
-                move((row)-5,(col/2)-3);
+                move((row)-2,(col/2)-3);
                 printw("Enter destination: ");
                 getstr(dest);
-                printw("%s", dest);
                 if(empty_input(dest))
                 {   
                     move((row)-3,(col/2)-3);
@@ -445,10 +378,9 @@ int matrixflight[5][7], num;
                     //return 0;
                 }
 
-                move((row)-4,(col/2)-3);
+                move((row)-1,(col/2)-3);
                 printw("Enter date: ");
                 getstr(dat);
-                printw("%s", dat);
                 getch();
                 if(empty_input(dat))
                 {   
@@ -465,8 +397,7 @@ strcpy(destination, dest);
 char source[50];
 strcpy(source, src);
 char date[50];
-strcpy(date, dat);
-getch();	
+strcpy(date, dat);	
     
 clear();
 
@@ -504,7 +435,7 @@ clear();
 	printw("Press any key to continue!");
 	}
 
-
+    return flag;
 }
 
 
