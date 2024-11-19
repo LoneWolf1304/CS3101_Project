@@ -3,6 +3,7 @@
 \usepackage{bm}
 \usepackage{tikz}
 \usepackage{dashrule}
+\usepackage{listings}
 \usepackage{array}
 \usepackage{microtype}
 \usepackage{mathtools}
@@ -19,11 +20,13 @@
         breaklinks=true
     }
 
+    \usepackage[T1]{fontenc}   
+    \usepackage{lmodern}    
 
 
 \addtokomafont{title}{\sffamily}
 \setkomafont{subtitle}{\LARGE\sffamily\bfseries}
-\DeclareFontShape{T1}{cmss}{b}{n}{<->ssub*cmss/bx/n}{}
+%\DeclareFontShape{T1}{cmss}{b}{n}{<->ssub*cmss/bx/n}{}
 \setkomafont{author}{\large}
 \setkomafont{date}{}
 
@@ -40,22 +43,46 @@
 
 
 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+
+
+
 
 \begin{document}
 \maketitle
 \tableofcontents
 \section{Introduction}
-This project is made as part of the CS3101 course. The project is a flight reservation system which is named as Ronway Airlines. The project is made using C and compiled using gcc. The system can be accessed in two modes: User and Admin. As a User, one can search flights according to the source,destination, date and time. The user can also book a flight, cancel a booking, view the booking history and also chat with the chatbot named Bandhu. As an Admin, one can add flights, view all the flights available, change the details of a flight and delete a flight altogether.
+This project is made as part of our CS3101 course. The project implements a flight reservation system which is named as Ronway Airlines. It is written using C and compiled using gcc. \\[0.3cm]
+The system integrates various concepts in C like structures, pointers, file handling, etc to provide a holistic prototype interface for handling flight systems. \\[0.3cm]
+The system can be accessed in two modes: User and Admin.\\[0.3cm]
+As a User, one can search flights according to the source,destination, date and time. The user can also book or cancel a booking, view the booking history and also chat with the chatbot named Bandhu on basic questions regarding booking, cancellation and other general queries.\\[0.3cm]
+As an Admin, one can add flights, view all the flights available, change the details of a flight and delete a flight altogether.
 \section{Building and Dependencies}
+The project is built using C and compiled using gcc. To provide a more aesthetic interface, the project uses the \textit{ncurse.h} library which has provisions like output positioning at specific coordinates, output colouring, etc. Thus, the \textit{ncurse.h} library should be installed to run the project.\\[0.3cm]
+To provide an initial list of flights, we have created a C file \textit{flight\_list.c} (located in the Seat Matrix directory) which contains the details of the flights and stores it in a file Airlist.txt. Thus, it should be compiled first using 
+\begin{center}
+    gcc -o AirList flight\_list.c
+\end{center}
+The main project file is \textit{Flight\_Reservation.c} which should be compiled using: 
+\begin{center}
+    gcc -o Flight\_out Flight\_Reservation.c -lncurses
+\end{center}
+The \textit{-lncurses} flag is neccessary since we are using the \textit{ncurse.h} library.\\[0.3cm]
+
 \section{Main Structure}
-
-
+The figure below provides a schematic diagram of the main structure of the program. The arrows indicate the logical flow of the system.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.1]{main structure.png}
     \caption{Main structure of the Program}
 \end{figure}
-
+\noindent
+Starting from the main page, we can either signup (if new user/admin) or login. Accordinly as user/admin, we have the accessibility of different utilitites. 
 
 \section{Documentation}
 \subsection{Functions for User Utilities}
@@ -75,5 +102,21 @@ The main Functions used in the Admin Utilities are as follows:
     \item \texttt{void displayAllFlights()}: This function is used to display all the flights available. The function displays all the flights available in the database.\\
 \end{itemize}
 \subsection{Functions for Bandhu--the chatbot}
+The code for the chatbot is included in the file  \texttt{Bandhu\_chatbot.c} . The main Functions used in the chatbot are as follows: 
+
+%\begin{itemize}
+\noindent
+    
+\begin{itemize}
+    \item \texttt{char *lowering(char *str)}: This function is used to convert a string to lowercase. The function takes a string pointer as input and returns the string in lowercase.
+    \item \texttt{const char *keyword\_match(const char *keywords[], char *response, int size)}: This function is used to match the user's input with the keywords array. The function takes the keywords, the user's input and the size of the array of keywords array as input and returns the matched keyword from the array.
+    \item \texttt{int indexOf(const char *str[], const char *substr, int size)}: This function is used to find the index of a string in an array of strings. The function takes the array of strings, the string and the size of the array as input and returns the index of the string in the array.
+    \item \texttt{int chat(char *name)}: This function is used to chat with the chatbot. The function takes the user's name as input and then provides responses according to user's input.\\
+    Various arrays of keywords of different categories like booking, cancellation, greeting, etc. are used in the chatbot. The user provides a response and the function finds whether any word from the various keywords array is a substring of the user's input. If a keyword is found, the chatbot provides a response accordingly.
+\end{itemize}
+        
+
 \section{Contributions}
+
+
 \end{document}

@@ -635,7 +635,7 @@ int bookFlight(char* flightnum, char* usr)
 
             for(int i=0; i<numTicket; i++)
             {
-                move(y/2-7+4*numTicket+1+i, x/2-5);
+                move(y/2-7+4*numTicket+i, x/2-5);
                 getstr(bookers[i].seat);
                 strcpy(seats[i], bookers[i].seat);
                 strcpy(bookers[i].flightnum,flightnum);
