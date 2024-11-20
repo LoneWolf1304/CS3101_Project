@@ -5,9 +5,9 @@
 #include<time.h>
 #include "airplane_list.h"
 
-#define ADULT_PRICE 5000   //defining adult children and infant prices
-#define CHILD_PRICE 3000
-#define INFANT_PRICE 0
+// #define ADULT_PRICE 5000   //defining adult children and infant prices
+// #define CHILD_PRICE 3000
+// #define INFANT_PRICE 0
 
 //checking for empty input
 int empty_input(const char *str) {
@@ -463,7 +463,7 @@ typedef struct {
 	char name[50];
 	int age;
 	char gender[10];
-    char type[10];//passenger type(adult, child, infant)
+    char type[10];
     char meal[20];
     char pnr[20];
     char seat[20];

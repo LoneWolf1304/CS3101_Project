@@ -12,7 +12,7 @@ typedef struct {
     double price;
 } flight;
 
-flight totalflight[50]=
+flight totalflight[8]=
 {   {"AI202", 15, "Kolkata", "Delhi", "12-04-2024", "18:00"},
     {"IGO1013", 23, "Bengaluru", "Madurai", "12-04-2024", "18:00"},
     {"SEJ1081", 15, "Chennai","Mumbai","12-04-2024", "18:00"},

@@ -66,6 +66,11 @@ To provide an initial list of flights, we have created a C file \textit{flight\_
 \begin{center}
     gcc -o AirList flight\_list.c
 \end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{initial.png}
+    \caption{Initial List of flights}
+\end{figure}
 The main project file is \textit{Flight\_Reservation.c} which should be compiled using: 
 \begin{center}
     gcc -o Flight\_out Flight\_Reservation.c -lncurses
@@ -81,18 +86,50 @@ The figure below provides a schematic diagram of the main structure of the progr
 \end{figure}
 \noindent
 Starting from the main page, we can either signup (if new user/admin) or login. Accordinly as user/admin, we have the accessibility of different utilitites. 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{content.jpg}
+    \caption{Main contents of the directory}
+\end{figure}
 \section{Documentation}
+\subsection{General Functions}
+Functions in Login.c file:
+\begin{itemize}
+    \item \texttt{int admin\_login()}: This function is used to login as an admin. The admin is asked to enter the username and password. If the username and password match, the admin is redirected to the admin utilities page.\\
+    \item \texttt{int user\_login()}: This function is used to login as a user. The user is asked to enter the username and password. If the username and password match, the user is redirected to the user utilities page.\\
+\end{itemize}
+Functions in SignUp.c: \\[0.2cm]
+\texttt{int signup()}: This function is used to signup as a user. The user is asked to enter the username and password. The function then adds the user to the database.\\
+
+
+
 \subsection{Functions for User Utilities}
-The main Functions used in the User Utilities are as follows:
+The main Functions used in the User Utilities (contained in the booking.c file) are as follows:
 \begin{itemize}
     \item  \texttt{int searchFlight()}: This function is used to search for flights according to the source, destination, date. The function then searches for the flights according to the user's input and displays the flights available.\\
-    \item \texttt{int bookFlight(char* flightnum, char* usr)}: This function is used to book a flight. The user is asked to enter the flight number and the number of seats to be booked. The function then books the flight and updates the booking history.\\
-    \item \texttt{int cancelBooking(char* tick)}: This function is used to cancel a booking. The user is asked to enter the booking ID and the function then cancels the booking.\\
-    \item \texttt{void view\_booking\_history()}: This function is used to view the booking history. The function displays the booking history of the user.\\
+    The function first displays a calendar where the dates available are highlighted in green. Then the user is asked to select the source and destination of his choice and the date of travel. If a flight is found, the user is redirected to the booking page. 
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{search.png}
+        \caption{Contents when search function is called}
+    \end{figure}
+    \item \texttt{int bookFlight(char* flightnum, char* usr)}: This function is used to book a flight. The user is asked to enter the flight number and the number of seats to be booked. The function then books the flight and updates the booking history. The final bill is then generated and booking is successful\\
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.3]{book1.png}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.4]{book2.jpg}
+        \caption{Contents when booking function is called}
+    \end{figure}
+    \item \texttt{int cancelBooking(char* tick)}: This function is used to cancel a booking. The user is asked to enter the booking ID and the function then cancels the booking. If a record is found, the user is asked for confirmation of cancellation and the booking is subsequently cancelled. \\
+    \item \texttt{void view\_booking\_history()}: This function is used to view the booking history. The function displays the booking record of the user.\\
+    \item \texttt{void update\_seat\_matrix(char* filename, char* airnum, char seats[][10], int size, char* mode)}: This function is used to update the seat matrix. The function takes the filename, flight number, the list of seats, the number of seats, the size of the matrix and the mode as input (``add" or ``remove") and updates the seat matrix.\\
 \end{itemize}
 \subsection{Functions for Admin Utilities}
-The main Functions used in the Admin Utilities are as follows:
+The main Functions used in the Admin Utilities (contained in the admin.c file) are as follows:
 \begin{itemize}
     \item \texttt{void addFlight()}: This function is used to add a flight. The admin is asked to enter the flight details and the function then adds the flight to the database.\\
     \item \texttt{void updateFlight()}: This function is used to update the details of a flight. The admin is asked to enter the flight number and the function then updates the details of the flight.\\
@@ -112,7 +149,63 @@ The code for the chatbot is included in the file  \texttt{Bandhu\_chatbot.c} . T
     \item \texttt{int chat(char *name)}: This function is used to chat with the chatbot. The function takes the user's name as input and then provides responses according to user's input.\\
     Various arrays of keywords of different categories like booking, cancellation, greeting, etc. are used in the chatbot. The user provides a response and the function finds whether any word from the various keywords array is a substring of the user's input. If a keyword is found, the chatbot provides a response accordingly.
 \end{itemize}
+\subsection{Structures:}
+We have used different structures to construct the project. The main structures used are:
+\begin{itemize}
+    \item For defining flight
+    \begin{lstlisting}[language=C]
+        typedef struct{
+        char flightnum[50];
+        int seatsFree;
+        char source[100];
+        char destination [100];
+        char date[50]; 
+        char time[50];
+        double adult_price;
+        double child_price;
+        double infant_price;
         
+        } flight;
+    
+        
+    \end{lstlisting}
+    \item For defining a person who is booking the flight
+    \begin{lstlisting}[language=C]
+        typedef struct {
+        char username[50];
+        char name[50];
+        int age;
+        char gender[10];
+        char type[10];// determines whether infant or child or adult
+        char meal[20];
+        char pnr[20];
+        char seat[20];
+        char flightnum[20];
+        double price;
+    } BOOKER;
+
+    \end{lstlisting}
+    \item For defining the user
+    \begin{lstlisting}[language=C]
+        typedef struct user{
+        char name[50];
+        char pwd[50];
+        }USER;
+    \end{lstlisting}
+    \item For defining the admin
+    \begin{lstlisting}[language=C]
+        typedef struct admin{
+        char name[50];
+        char pwd[50];
+        char id[50];
+        }ADMIN;
+    \end{lstlisting}
+\end{itemize}
+
+
+
+
+
 
 \section{Limitations and Future Prospects}
 The following are the limitations on which we have to work on:
@@ -126,9 +219,12 @@ The project is a collaborative effort of all the members. We have tried to divid
 The contributions from each member are as follows:
 
 \begin{itemize}
+
     \item \textbf{Ronit Bhuyan} : Worked in the implementation of the admin utilities,like adding , updating and deleting a flight. In the user utilities section, has partial contributions to searching and booking flights. In addition to that, helped in alignment of text and user outputs as well as the documentations.
     
     \item \textbf{Sagnik Seth} : Has written the code for the signup, login page, partially done the booking tickets for user part, worked on the seat matrix printing, viewing the record of the user, cancelling user tickets, for overall presentation of the interface like printing the calendar and the ASCII arts, partially done the chatbot part, and the documentation.
+    
+    
     
     \item \textbf{Aviyank Aryan}: Helped in the implementation of the chatbot and  completion of the documentations.
 \end{itemize}
